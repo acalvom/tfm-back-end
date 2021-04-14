@@ -5,6 +5,9 @@
 /tmp
 /out-tsc
 
+# sensitive files
+/app/database/database.js
+
 # dependencies
 /node_modules
 
