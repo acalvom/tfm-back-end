@@ -24,4 +24,7 @@ app.listen(port, function () {
     console.log("Hour: " + Date());
 });
 
+// Connect to the DDBB
+require('./app/database/database');
+
 module.exports = app;
