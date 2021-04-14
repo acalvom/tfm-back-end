@@ -7,7 +7,7 @@
 `JavaScript` `Express` `Node` `npm` `GitHub` `GitHub Actions` `SonarCloud`
 
 ## Estado del código
-* SonarCloud Budges: 
+* SonarCloud Budges: [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=acalvom_tfm-back-end&metric=alert_status)](https://sonarcloud.io/dashboard?id=acalvom_tfm-back-end)
 
 ## :octocat: Repositorios
 * [Proyecto centralizado](https://github.com/acalvom/tfm-management)
