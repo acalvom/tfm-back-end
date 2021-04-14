@@ -1,0 +1,14 @@
+{
+  "name": "tfm-back-end",
+  "version": "1.0.0",
+  "description": "This project contains the code from the server side in NodeJS and Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrea Calvo Moreno",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
