@@ -30,7 +30,8 @@
 # misc
 /.sass-cache
 /connect.lock
-/coverage
+/coverage/*
+!/coverage/lcov.info
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log
