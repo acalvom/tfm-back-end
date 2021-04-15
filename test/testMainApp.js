@@ -1,5 +1,6 @@
-var expect = require('chai').expect;
-var request = require('request');
+const expect = require('chai').expect;
+const request = require('request');
+require('../index');
 
 it('Main page content', function (done) {
     request('http://localhost:8000', function (error, response, body) {
