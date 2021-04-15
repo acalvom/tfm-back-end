@@ -6,7 +6,7 @@
 /out-tsc
 
 # sensitive files
-/app/database/database.js
+#/app/database/database.js
 
 # dependencies
 /node_modules
@@ -30,8 +30,6 @@
 # misc
 /.sass-cache
 /connect.lock
-/coverage/*
-!/coverage/lcov.info
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log
@@ -45,3 +43,4 @@ Thumbs.db
 /mochawesome-report/assets/
 /mochawesome-report/mochawesome.json
 /.nyc_coverage/lcov-report/
+/coverage/lcov-report
