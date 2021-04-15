@@ -4,18 +4,27 @@
   "description": "This project contains the code from the server side in NodeJS and Express",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/*.js",
+    "report": "mocha --recursive test --reporter mochawesome",
+    "coverage": "nyc --reporter=text --reporter=lcov npm test"
   },
   "author": "Andrea Calvo Moreno",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "chai": "^4.3.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mocha": "^8.3.2",
     "mysql": "^2.18.1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/acalvom/tfm-back-end.git"
+  },
+  "devDependencies": {
+    "mochawesome": "^6.2.2",
+    "nyc": "^15.1.0",
+    "request": "^2.88.2"
   }
 }
