@@ -4,7 +4,8 @@
   "description": "This project contains the code from the server side in NodeJS and Express",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*.js"
+    "test": "mocha test/*.js",
+    "report": "mocha --recursive test --reporter mochawesome"
   },
   "author": "Andrea Calvo Moreno",
   "license": "ISC",
@@ -21,6 +22,7 @@
     "url": "https://github.com/acalvom/tfm-back-end.git"
   },
   "devDependencies": {
+    "mochawesome": "^6.2.2",
     "request": "^2.88.2"
   }
 }
