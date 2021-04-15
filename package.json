@@ -4,9 +4,9 @@
   "description": "This project contains the code from the server side in NodeJS and Express",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*.js",
+    "test": "mocha test/**/*.js",
     "report": "mocha --recursive test --reporter mochawesome",
-    "coverage": "nyc --reporter=text --reporter=lcov npm test"
+    "coverage": "nyc npm test"
   },
   "author": "Andrea Calvo Moreno",
   "license": "ISC",
@@ -17,6 +17,21 @@
     "express": "^4.17.1",
     "mocha": "^8.3.2",
     "mysql": "^2.18.1"
+  },
+  "nyc": {
+    "all": true,
+    "check-coverage": true,
+    "include": "app",
+    "exclude": "test",
+    "branches": 80,
+    "lines": 80,
+    "functions": 80,
+    "statements": 80,
+    "reporter": [
+      "lcov",
+      "text",
+      "text-summary"
+    ]
   },
   "repository": {
     "type": "git",
