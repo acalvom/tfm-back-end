@@ -24,7 +24,6 @@
   },
   "devDependencies": {
     "mochawesome": "^6.2.2",
-    "nyc": "^15.1.0",
     "request": "^2.88.2"
   }
 }
