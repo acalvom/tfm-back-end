@@ -30,8 +30,8 @@
 # misc
 /.sass-cache
 /connect.lock
-#/coverage/*
-#!/coverage/lcov.info
+/coverage/*
+!/coverage/lcov.info
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log
@@ -44,3 +44,4 @@ Thumbs.db
 /.nyc_output
 /mochawesome-report/assets/
 /mochawesome-report/mochawesome.json
+/.nyc_coverage/lcov-report/
