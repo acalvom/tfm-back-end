@@ -6,7 +6,7 @@
 /out-tsc
 
 # sensitive files
-#/app/database/database.js
+/app/database/databaseManager.js
 
 # dependencies
 /node_modules
