@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha test/**/*.js",
     "report": "mocha --recursive test --reporter mochawesome",
-    "coverage": "nyc --reporter lcov --reporter text --report-dir .nyc_coverage report"
+    "coverage": "nyc npm test"
   },
   "author": "Andrea Calvo Moreno",
   "license": "ISC",
@@ -31,7 +31,8 @@
       "lcov",
       "text",
       "text-summary"
-    ]
+    ],
+    "report-dir": "coverage report"
   },
   "repository": {
     "type": "git",
