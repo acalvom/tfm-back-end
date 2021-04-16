@@ -1,4 +1,4 @@
-const dniLetter = require('../../app/coverageVerfication/getDNILetter');
+const dniLetter = require('../../app/coverageVerification/getDNILetter');
 const expect = require('chai').expect;
 
 describe('Testing letter for DNI: CHAI + regular function', function () {
