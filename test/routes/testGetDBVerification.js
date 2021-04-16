@@ -11,10 +11,10 @@ describe('get all database', function () {
         chai.request(url)
         chai.request(toTest)
             .get('/connectdb')
-            .end(function (err,res) {
+            .end(function (err, res) {
                 expect(res).to.have.status(200);
-                expect(res.body[0]).to.have.property('id',1);
-                expect(res.body[2]).to.have.property('isConnected',0);
+                expect(res.body[0]).to.have.property('id', 1);
+                expect(res.body[2]).to.have.property('isConnected', 0);
                 expect(res.body).to.be.a('array');
                 done();
             });
