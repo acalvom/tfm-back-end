@@ -1,9 +1,8 @@
 const connection = require('../database/database');
 const DB_ERROR = "Database Server Error";
 
-function showDB (req, res){
+function showDB(req, res) {
     let sql = 'SELECT * FROM connectddbb';
-    // var mycon = connection;
     connection.query(sql, function (err, rows) {
         if (err) {
             res.json(DB_ERROR);
@@ -13,4 +12,5 @@ function showDB (req, res){
         }
     });
 }
+
 exports.showDB = showDB;
