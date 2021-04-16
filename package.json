@@ -32,7 +32,7 @@
       "text",
       "text-summary"
     ],
-    "report-dir": "coverage report"
+    "report-dir": "coverage"
   },
   "repository": {
     "type": "git",
