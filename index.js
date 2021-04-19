@@ -27,6 +27,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/connectdb', connectDB.showDB);
-app.get('/users/login', user.userLogin);
+app.post('/users/login', user.userLogin);
 
 module.exports = app;

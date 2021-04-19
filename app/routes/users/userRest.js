@@ -1,7 +1,6 @@
 function userLogin(req, res) {
-    'use strict';
-    let userEmail = req.query.email;
-    let password = req.query.password;
+    let userEmail = req.body.email;
+    let password = req.body.password;
     console.log('Email: ' + userEmail + ' Password: ' + password);
 }
 
