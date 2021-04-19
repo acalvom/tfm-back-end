@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 const port = 8000;
 const connectDB = require('./app/routes/getDBVerification');
+const user = require('./app/routes/users/userRest');
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -26,5 +27,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/connectdb', connectDB.showDB);
+app.get('/users/login', user.userLogin);
 
 module.exports = app;
