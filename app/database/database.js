@@ -14,10 +14,10 @@ connection.connect(function (err) {
     err ? console.log(DB_ERROR) : console.log(DB_OK);
 });
 
-exports.closeConnection = function (connection) {
+exports.closeConnection = function () {
     connection.end(function (err) {
     });
-    console.log("DataBase connection closed");
+    console.log("Database connection closed");
 }
 
 module.exports = connection;
