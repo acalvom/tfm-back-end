@@ -18,9 +18,10 @@ function userLogin(req, res) {
                 sql = "UPDATE users SET token = '" + token + "' WHERE (email = '" + userEmail + "')";
                 connection.query(sql, function (err) {
                     if (!err) {
-                        res.set("Access-Control-Expose-Headers", "Authorization");
+                        res.set("Access-Control-Expose-Headers", ["Authorization", "Role"]);
                         res.set("Authorization", "Bearer " + token);
-                        res.json("Bearer " + token);
+                        res.set("Role", result[0].role);
+                        res.json("Bearer " + token + "Role " + result[0].role);
                     }
                 });
             } else {
