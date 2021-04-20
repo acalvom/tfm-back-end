@@ -13,19 +13,16 @@ function userLogin(req, res) {
         sql = "SELECT id, name, surname, dni, gender, email, password, salt, penalties, role FROM `users` WHERE `email`='" + userEmail + "' and password = '" + password + "'";
         connection.query(sql, function (err, result) {
             if (!err && result.length == 1) {
-                // res.json(result);
-                token = jwt.createToken(userEmail, result[0].role);
+                token = jwt.generateToken(userEmail, result[0].role);
                 console.log('Token: ' + token);
                 sql = "UPDATE users SET token = '" + token + "' WHERE (email = '" + userEmail + "')";
-                connection.query(sql, function (err, result) {
-                    if (err)
-                        console.log(err);
-                    else {
+                connection.query(sql, function (err) {
+                    if (!err) {
                         res.set("Access-Control-Expose-Headers", "Authorization");
                         res.set("Authorization", "Bearer " + token);
                         res.json("Bearer " + token);
                     }
-                })
+                });
             } else {
                 res.json(DB_ERROR);
                 console.log(err);
@@ -36,3 +33,10 @@ function userLogin(req, res) {
 }
 
 exports.userLogin = userLogin;
+
+// This is only to validate token verification
+function validToken(req) {
+    jwt.validateToken(req);
+}
+
+exports.validToken = validToken;

@@ -29,4 +29,7 @@ app.get('/', (req, res) => {
 app.get('/connectdb', connectDB.showDB);
 app.post('/users/login', user.userLogin);
 
+// This is only to validate token verification
+app.get('/records/:email', user.validToken);
+
 module.exports = app;
