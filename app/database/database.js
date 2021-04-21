@@ -10,9 +10,17 @@ const connection = mysql.createConnection({
     database: connectionData.connectionData.database
 });
 
-// Check connection
 connection.connect(function (err) {
     err ? console.log(DB_ERROR) : console.log(DB_OK);
 });
-
 module.exports = connection;
+
+
+function closeConnection() {
+    connection.end(function (err) {
+    });
+    console.log("Database connection closed");
+}
+
+exports.closeConnection = closeConnection;
+

@@ -7,6 +7,7 @@
 
 # sensitive files
 /app/database/databaseManager.js
+/app/middleware/private.key
 
 # dependencies
 /node_modules
