@@ -43,7 +43,7 @@ function saveToken(role, res) {
 
 // This is only to validate token verification
 function validToken(req) {
-    middleware.isValidToken(req);
+    return middleware.isValidToken(req);
 }
 
 exports.validToken = validToken;

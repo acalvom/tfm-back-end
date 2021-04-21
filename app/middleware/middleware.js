@@ -2,19 +2,21 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const MINUTES = 10;
 const SECONDS_PER_MINUTE = 60;
+const NO_TOKEN = 'Undefined email or password'
 let payload;
+const httpCode = require('../resources/httpCodes');
 
 function readKey() {
     return fs.readFileSync('./app/middleware/private.key', "utf-8");
 }
 
 function generateToken(email, role) {
-    let payload = {
+    let newPayload = {
         "email": email,
         "role": role
     };
     let expiryTime = SECONDS_PER_MINUTE * MINUTES;
-    return jwt.sign(payload, readKey(), {expiresIn: expiryTime});
+    return newPayload.email == null ? NO_TOKEN : jwt.sign(newPayload, readKey(), {expiresIn: expiryTime})
 }
 
 exports.generateToken = generateToken;
@@ -30,11 +32,11 @@ function isValidToken(req) {
                 return true;
             }
         } catch (err) {
-            console.log("Non authorized access");
+            console.log(httpCode.codes.UNAUTHORIZED + " - Unauthorized access");
             return false;
         }
     } else {
-        console.log("No token provided");
+        console.log(httpCode.codes.NOCONTENT + " - No token provided");
         return false;
     }
 }
