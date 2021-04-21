@@ -13,11 +13,14 @@ const connection = mysql.createConnection({
 connection.connect(function (err) {
     err ? console.log(DB_ERROR) : console.log(DB_OK);
 });
+module.exports = connection;
 
-exports.closeConnection = function () {
+
+function closeConnection() {
     connection.end(function (err) {
     });
     console.log("Database connection closed");
 }
 
-module.exports = connection;
+exports.closeConnection = closeConnection;
+
