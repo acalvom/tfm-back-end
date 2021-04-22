@@ -7,22 +7,21 @@ var token, sql, email;
 function login(req, res) {
     email = req.body.email;
     let passwordEncrypted = req.body.password;
-    // console.log('Email: ' + email + ' Password: ' + passwordEncrypted);
     if (email && passwordEncrypted) {
         let password = CryptoJS.AES.decrypt(passwordEncrypted, 'password').toString(CryptoJS.enc.Utf8);
-        sql = "SELECT id, name, surname, dni, gender, email, password, salt, penalties, role FROM `users` WHERE `email`='" + email + "' and password = '" + password + "'";
-        connection.query(sql, function (err, result) {
+        sql = 'SELECT * FROM users WHERE email = ? and password = ?';
+        connection.query(sql, [email, password], function (err, result) {
             if (!err && result.length == 1) {
                 let role = result[0].role;
                 token = middleware.generateToken(email, role);
-                // console.log('Token: ' + token);
                 saveToken(role, res);
             } else {
                 res.status(httpCode.codes.NOTFOUND).json('NOT FOUND');
-                //console.log('Status ' + httpCode.codes.NOTFOUND);
             }
         });
 
+    } else {
+        res.status(httpCode.codes.NOCONTENT).json('NO CONTENT');
     }
 }
 

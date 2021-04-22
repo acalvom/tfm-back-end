@@ -50,7 +50,7 @@ describe('Testing AuthController', function () {
             })
     });
 
-    it('should return error in login', function (done) {
+    it('should return a user not found in login', function (done) {
         chai.request(url)
             .post("/users/login")
             .send({email: 'superuser@academy.com', password: 'password'})
@@ -59,4 +59,15 @@ describe('Testing AuthController', function () {
                 done();
             })
     });
+
+    it('should return no email/password provided in login', function (done) {
+        chai.request(url)
+            .post("/users/login")
+            .send({email: '', password: ''})
+            .end(function (err, res) {
+                expect(res).to.have.status((httpCode.codes.NOCONTENT));
+                done();
+            })
+    });
+
 });
