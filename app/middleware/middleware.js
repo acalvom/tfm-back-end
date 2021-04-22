@@ -28,7 +28,6 @@ function isValidToken(req) {
         try {
             payload = jwt.verify(token, readKey());
             if (payload.email) {
-                console.log(payload.email + ": " + payload.role);
                 return true;
             }
         } catch (err) {
