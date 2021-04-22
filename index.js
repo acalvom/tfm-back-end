@@ -7,6 +7,7 @@ const port = 8000;
 const connectDB = require('./app/routes/getDBVerification');
 const authRoutes = require('./app/routes/authRoutes');
 
+app.disable("x-powered-by");
 app.use(bodyParser.urlencoded({
     extended: true
 }));
