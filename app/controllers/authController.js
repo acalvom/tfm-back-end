@@ -2,7 +2,33 @@ const CryptoJS = require("crypto-js");
 const connection = require('../database/database');
 const middleware = require('../middleware/middleware');
 const httpCode = require('../resources/httpCodes');
+const User = require('../models/User');
+
 var token, sql, email;
+var user;
+
+function register(req, res) {
+    user = req.body;
+    if (user) {
+        let newUser = createUser(user)
+        console.log(newUser);
+    }
+}
+
+exports.register = register;
+
+function createUser(user) {
+    let newUser = new User();
+    newUser.name(user.name);
+    newUser.surname(user.surname);
+    newUser.dni(user.dni);
+    newUser.gender(user.gender);
+    newUser.role(user.role);
+    newUser.penalties(user.penalties);
+    newUser.email(user.email);
+    newUser.password(CryptoJS.AES.decrypt(user.password, 'password').toString(CryptoJS.enc.Utf8));
+    return newUser;
+}
 
 function login(req, res) {
     email = req.body.email;
