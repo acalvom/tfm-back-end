@@ -1,4 +1,5 @@
 const CryptoJS = require("crypto-js");
+const bcrypt = require('bcrypt');
 const connection = require('../database/database');
 const middleware = require('../middleware/middleware');
 const httpCode = require('../resources/httpCodes');
@@ -6,12 +7,16 @@ const User = require('../models/User');
 
 var token, sql, email;
 var user;
+const saltRounds = 10;
 
 function register(req, res) {
+    // TODO
     user = req.body;
     if (user) {
         let newUser = createUser(user)
         console.log(newUser);
+        const comparison = bcrypt.compareSync('a', newUser.password)
+        console.log(comparison);
     }
 }
 
@@ -26,15 +31,20 @@ function createUser(user) {
     newUser.role(user.role);
     newUser.penalties(user.penalties);
     newUser.email(user.email);
-    newUser.password(CryptoJS.AES.decrypt(user.password, 'password').toString(CryptoJS.enc.Utf8));
-    return newUser;
+    let encryptedPassword = bcrypt.hashSync(decryptPassword(user.password), saltRounds);
+    newUser.password(encryptedPassword);
+    return newUser.build();
+}
+
+function decryptPassword(passwordEncrypted) {
+    return CryptoJS.AES.decrypt(passwordEncrypted, 'password').toString(CryptoJS.enc.Utf8);
 }
 
 function login(req, res) {
     email = req.body.email;
     let passwordEncrypted = req.body.password;
     if (email && passwordEncrypted) {
-        let password = CryptoJS.AES.decrypt(passwordEncrypted, 'password').toString(CryptoJS.enc.Utf8);
+        let password = decryptPassword(passwordEncrypted);
         sql = 'SELECT * FROM users WHERE email = ? and password = ?';
         connection.query(sql, [email, password], function (err, result) {
             if (!err && result.length == 1) {
