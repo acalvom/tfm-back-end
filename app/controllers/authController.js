@@ -53,12 +53,7 @@ function login(req, res) {
     email = req.body.email;
     let password = decryptBodyPassword(req.body.password);
     if (email && password) {
-        // superuser: $2b$10$AVmvFV1pFySG7toYpJ6Lau2vXabZsxPBdWjkmVvZ/kJ8735zCGl72
-        // teacher: $2b$10$GhW2v/v3xXiPZ9T4gs4wq.FOZ7KmB39wCibjc4E.Tn255qeiIkCx.
-        // student: $2b$10$AdqKmH8DM4/rFoAc5suQJeaziM1gEZzCm6v8g8rVSbK9oVanhimaq
-        // sql = 'SELECT * FROM users WHERE email = ? and password = ?';
         sql = 'SELECT * FROM users WHERE email = ?';
-        // connection.query(sql, [email, password], function (err, result) {
         connection.query(sql, [email], function (err, result) {
             if (!err && result.length == 1) {
                 let isCorrectPassword = bcrypt.compareSync(password, result[0].password);
@@ -74,7 +69,6 @@ function login(req, res) {
                 res.status(httpCode.codes.NOTFOUND).json('USER NOT FOUND');
             }
         });
-
     } else {
         res.status(httpCode.codes.NOCONTENT).json('NO CONTENT');
     }

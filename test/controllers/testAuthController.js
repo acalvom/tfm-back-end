@@ -10,12 +10,14 @@ const auth = require('../../app/controllers/authController');
 
 chai.use(chaiHttp);
 const url = 'http://localhost:8000';
+const data = {email: 'superuser@academy.com', password: CryptoJS.AES.encrypt('superuser', 'password').toString()};
 
 describe('Testing AuthController', function () {
+
     it('should return a valid token', function (done) {
         chai.request(url)
             .post("/users/login")
-            .send({email: 'superuser@academy.com', password: CryptoJS.AES.encrypt('superuser', 'password').toString()})
+            .send(data)
             .end(function (err, res) {
                 expect(res).to.have.status(httpCode.codes.OK);
                 expect(res.header['authorization']).not.be.null;
@@ -24,10 +26,11 @@ describe('Testing AuthController', function () {
                 done();
             })
     });
+
     it('should return a not valid token', function (done) {
         chai.request(url)
             .post("/users/login")
-            .send({email: 'superuser@academy.com', password: CryptoJS.AES.encrypt('superuser', 'password').toString()})
+            .send(data)
             .end(function (err, res) {
                 expect(res).to.have.status(httpCode.codes.OK);
                 res.header['authorization'] = "Bearer badToken";
@@ -37,10 +40,11 @@ describe('Testing AuthController', function () {
                 done();
             })
     });
+
     it('should return no token', function (done) {
         chai.request(url)
             .post("/users/login")
-            .send({email: 'superuser@academy.com', password: CryptoJS.AES.encrypt('superuser', 'password').toString()})
+            .send(data)
             .end(function (err, res) {
                 expect(res).to.have.status(httpCode.codes.OK);
                 res.header['authorization'] = null;
@@ -53,9 +57,19 @@ describe('Testing AuthController', function () {
     it('should return a user not found in login', function (done) {
         chai.request(url)
             .post("/users/login")
-            .send({email: 'superuser@academy.com', password: 'password'})
+            .send({email: 'nouser@academy.com', password: data.password})
             .end(function (err, res) {
                 expect(res).to.have.status((httpCode.codes.NOTFOUND));
+                done();
+            })
+    });
+
+    it('should return a wrong password in login', function (done) {
+        chai.request(url)
+            .post("/users/login")
+            .send({email: data.email, password: CryptoJS.AES.encrypt('aa', 'password').toString()})
+            .end(function (err, res) {
+                expect(res).to.have.status((httpCode.codes.BADREQUEST));
                 done();
             })
     });
@@ -69,5 +83,4 @@ describe('Testing AuthController', function () {
                 done();
             })
     });
-
 });
