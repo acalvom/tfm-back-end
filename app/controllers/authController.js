@@ -11,11 +11,8 @@ const saltRounds = 10;
 
 function register(req, res) {
     let user = req.body;
-    if (user) {
+    if (user && isAdmin(req)) {
         newUser = createUser(user)
-        console.log(newUser);
-        const comparison = bcrypt.compareSync('a', newUser.password)
-        console.log(comparison);
         sql = 'INSERT INTO users (name, surname, dni, gender, email, password, penalties, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         connection.query(sql, [newUser.name, newUser.surname, newUser.dni, newUser.gender, newUser.email, newUser.password, newUser.penalties, newUser.role], function (err, result) {
             if (!err) {
@@ -26,6 +23,8 @@ function register(req, res) {
                 res.status(httpCode.codes.CONFLICT).json('USER ALREADY EXISTS');
             }
         })
+    } else {
+        res.status(httpCode.codes.UNAUTHORIZED).json('UNAUTHORIZED ACTION');
     }
 }
 
@@ -87,6 +86,10 @@ function saveToken(role, res) {
         }
     });
 
+}
+
+function isAdmin(req) {
+    return middleware.getTokenPayload(req).role === 'admin';
 }
 
 // This is only to validate token verification
