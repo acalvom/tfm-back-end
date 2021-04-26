@@ -5,8 +5,8 @@ const middleware = require('../middleware/middleware');
 const httpCode = require('../resources/httpCodes');
 const User = require('../models/User');
 
-var token, sql, email;
-var newUser;
+let token, sql, email;
+let newUser;
 const saltRounds = 10;
 
 function register(req, res) {
@@ -14,12 +14,10 @@ function register(req, res) {
     if (user && isAdmin(req)) {
         newUser = createUser(user)
         sql = 'INSERT INTO users (name, surname, dni, gender, email, password, penalties, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        connection.query(sql, [newUser.name, newUser.surname, newUser.dni, newUser.gender, newUser.email, newUser.password, newUser.penalties, newUser.role], function (err, result) {
+        connection.query(sql, [newUser.name, newUser.surname, newUser.dni, newUser.gender, newUser.email, newUser.password, newUser.penalties, newUser.role], function (err) {
             if (!err) {
-                console.log('Insert successful' + result)
-                res.json('USER INSERTED SUCCESSFULLY');
+                res.status(httpCode.codes.CREATED).json(newUser);
             } else {
-                console.log('Insert error' + err)
                 res.status(httpCode.codes.CONFLICT).json('USER ALREADY EXISTS');
             }
         })
