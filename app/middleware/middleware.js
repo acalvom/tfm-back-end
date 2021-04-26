@@ -42,9 +42,8 @@ function isValidToken(req) {
 
 exports.isValidToken = isValidToken;
 
-function getTokenPayload() {
-    if (this.isValidToken()) {
-        console.log(payload.email + ": " + payload.role);
+function getTokenPayload(req) {
+    if (this.isValidToken(req)) {
         return payload;
     }
 }

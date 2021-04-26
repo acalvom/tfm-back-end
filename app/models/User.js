@@ -25,7 +25,7 @@ class UserBuilder {
     }
 
     name(name) {
-        this.name = name;
+        this.user.name = name;
         return this;
     }
 
