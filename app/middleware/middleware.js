@@ -49,3 +49,25 @@ function getTokenPayload(req) {
 }
 
 exports.getTokenPayload = getTokenPayload;
+
+function tokenProvided(req, res) {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')
+        return req.headers.authorization.split(' ')[1];
+    else
+        res.status(httpCode.codes.NOCONTENT).json('No token provided');
+}
+
+function isAdmin(req, res, next) {
+    let token = tokenProvided(req, res);
+    if (token) {
+        jwt.verify(token, readKey(), (err, decoded) => {
+            if (!err && decoded.role === 'admin') {
+                req.decoded = decoded;
+                next();
+            } else
+                res.status(httpCode.codes.UNAUTHORIZED).json('You are not an admin');
+        });
+    }
+}
+
+exports.isAdmin = isAdmin;
