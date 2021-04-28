@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const MINUTES = 10;
+const MINUTES = 100;
 const SECONDS_PER_MINUTE = 60;
 const NO_TOKEN = 'Undefined email or password'
 let payload;
