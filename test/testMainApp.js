@@ -4,7 +4,7 @@ require('../index');
 
 it('Main page content', function (done) {
     request('http://localhost:8000', function (error, response, body) {
-        expect(body).to.equal('Hello World');
+        expect(body).to.equal('Welcome to our gym!');
         done();
     });
 });

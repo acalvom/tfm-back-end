@@ -6,7 +6,6 @@ const describe = mocha.describe;
 
 const CryptoJS = require("crypto-js");
 const httpCode = require('../../app/resources/httpCodes');
-const auth = require('../../app/controllers/authController');
 const middleware = require('../../app/middleware/middleware');
 
 chai.use(chaiHttp);
@@ -28,7 +27,6 @@ describe('Testing AuthController', function () {
                     expect(res).to.have.status(httpCode.codes.OK);
                     expect(res.header['authorization']).not.be.null;
                     expect(res.header).to.have.property('role', 'admin');
-                    expect(auth.validToken(res)).to.be.true;
                     done();
                 })
         });
@@ -42,7 +40,6 @@ describe('Testing AuthController', function () {
                     res.header['authorization'] = "Bearer badToken";
                     expect(res.header['authorization']).not.be.null;
                     expect(res.header).to.have.property('authorization', 'Bearer badToken');
-                    expect(auth.validToken(res)).to.be.false;
                     done();
                 })
         });
@@ -55,7 +52,6 @@ describe('Testing AuthController', function () {
                     expect(res).to.have.status(httpCode.codes.OK);
                     res.header['authorization'] = null;
                     expect(res.header['authorization']).to.be.null;
-                    expect(auth.validToken(res)).to.be.false;
                     done();
                 })
         });
@@ -137,6 +133,17 @@ describe('Testing AuthController', function () {
                 .send(data)
                 .end(function (err, res) {
                     expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                    done();
+                })
+        });
+
+        it('should return no content because the body is empty', function (done) {
+            data = {}
+            chai.request(url)
+                .post("/users/register")
+                .set('Authorization', adminToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
                     done();
                 })
         });

@@ -4,7 +4,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const port = 8000;
-const connectDB = require('./app/routes/getDBVerification');
 const authRoutes = require('./app/routes/authRoutes');
 const usersRoutes = require('./app/routes/usersRoutes');
 
@@ -26,10 +25,9 @@ app.listen(port, function () {
 
 // Routes
 app.get('/', (req, res) => {
-    res.send('Hello World')
+    res.send('Welcome to our gym!')
 });
 
-app.get('/connectdb', connectDB.showDB);
 app.use(authRoutes);
 app.use(usersRoutes);
 

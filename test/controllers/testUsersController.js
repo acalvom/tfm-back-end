@@ -20,7 +20,7 @@ describe('Testing Users', function () {
 
     });
 
-    it('should return a no token provided code', function (done) {
+    it('should return no content because there is no token provided', function (done) {
         chai.request(url)
             .get("/users")
             .end(function (err, res) {
@@ -40,7 +40,7 @@ describe('Testing Users', function () {
             })
     });
 
-    it('should return an UNAUTHORIZED code', function (done) {
+    it('should return an unauthorized code because role is teacher', function (done) {
         chai.request(url)
             .get("/users")
             .set('Authorization', teacherToken)
@@ -50,7 +50,7 @@ describe('Testing Users', function () {
             })
     });
 
-    it('should return an UNAUTHORIZED code', function (done) {
+    it('should return an unauthorized code because role is student', function (done) {
         chai.request(url)
             .get("/users")
             .set('Authorization', studentToken)
