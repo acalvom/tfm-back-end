@@ -35,7 +35,20 @@ middleware.isAdmin = (req, res, next) => {
                 req.decoded = decoded;
                 next();
             } else
-                res.status(httpCode.codes.UNAUTHORIZED).json('Unauthorized access"');
+                res.status(httpCode.codes.UNAUTHORIZED).json('You are not an admin');
+        });
+    }
+}
+
+middleware.isTeacher = (req, res, next) => {
+    let token = tokenProvided(req, res);
+    if (token) {
+        jwt.verify(token, readKey(), (err, decoded) => {
+            if (!err && decoded.role === 'teacher') {
+                req.decoded = decoded;
+                next();
+            } else
+                res.status(httpCode.codes.UNAUTHORIZED).json('You are not a teacher');
         });
     }
 }
