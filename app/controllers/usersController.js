@@ -14,5 +14,15 @@ usersController.getAllUsers = (req, res) => {
     });
 }
 
+usersController.getAllStudents = (req, res) => {
+    sql = 'SELECT * FROM users WHERE role = ?';
+    connection.query(sql, ['student'], function (err, students) {
+        if (!err && students.length > 0) {
+            res.status(httpCode.codes.OK).json(students);
+        } else
+            res.status(httpCode.codes.NOTFOUND).json('Students not found');
+    });
+}
+
 module.exports = usersController;
 
