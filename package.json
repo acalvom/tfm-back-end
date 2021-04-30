@@ -29,8 +29,8 @@
     "include": "app",
     "exclude": [
       "test",
-      "app/models",
-      "app/database"
+      "app/models/**",
+      "app/database/**"
     ],
     "branches": 60,
     "lines": 60,

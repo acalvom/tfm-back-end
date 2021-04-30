@@ -12,51 +12,95 @@ let adminToken, teacherToken, studentToken;
 
 chai.use(chaiHttp);
 
-describe('Testing Users', function () {
+describe('Testing Users -- Teacher Role', function () {
     before(function () {
         adminToken = 'Bearer ' + middleware.generateToken('superuser@academy.com', 'admin');
         teacherToken = 'Bearer ' + middleware.generateToken('teacher@academy.com', 'teacher');
         studentToken = 'Bearer ' + middleware.generateToken('student@academy.com', 'student');
-
     });
 
-    it('should return no content because there is no token provided', function (done) {
-        chai.request(url)
-            .get("/users")
-            .end(function (err, res) {
-                expect(res).to.have.status(httpCode.codes.NOCONTENT);
-                done();
-            })
+    describe('Admin Role', function () {
+        it('should return no content because there is no token provided', function (done) {
+            chai.request(url)
+                .get("/users")
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    done();
+                })
+        });
+
+        it('should return an array of users', function (done) {
+            chai.request(url)
+                .get("/users")
+                .set('Authorization', adminToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.OK);
+                    expect(res.body).to.be.a('array');
+                    done();
+                })
+        });
+
+        it('should return an unauthorized code because role is teacher', function (done) {
+            chai.request(url)
+                .get("/users")
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                    done();
+                })
+        });
+
+        it('should return an unauthorized code because role is student', function (done) {
+            chai.request(url)
+                .get("/users")
+                .set('Authorization', studentToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                    done();
+                })
+        });
     });
 
-    it('should return an array of users', function (done) {
-        chai.request(url)
-            .get("/users")
-            .set('Authorization', adminToken)
-            .end(function (err, res) {
-                expect(res).to.have.status(httpCode.codes.OK);
-                expect(res.body).to.be.a('array');
-                done();
-            })
+    describe('Teacher Role', function () {
+        it('should return no content because there is no token provided', function (done) {
+            chai.request(url)
+                .get("/users/students")
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    done();
+                })
+        });
+
+        it('should return an array of users', function (done) {
+            chai.request(url)
+                .get("/users/students")
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.OK);
+                    expect(res.body).to.be.a('array');
+                    done();
+                })
+        });
+
+        it('should return an unauthorized code because role is admin', function (done) {
+            chai.request(url)
+                .get("/users/students")
+                .set('Authorization', adminToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                    done();
+                })
+        });
+
+        it('should return an unauthorized code because role is student', function (done) {
+            chai.request(url)
+                .get("/users/students")
+                .set('Authorization', studentToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                    done();
+                })
+        });
     });
 
-    it('should return an unauthorized code because role is teacher', function (done) {
-        chai.request(url)
-            .get("/users")
-            .set('Authorization', teacherToken)
-            .end(function (err, res) {
-                expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
-                done();
-            })
-    });
-
-    it('should return an unauthorized code because role is student', function (done) {
-        chai.request(url)
-            .get("/users")
-            .set('Authorization', studentToken)
-            .end(function (err, res) {
-                expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
-                done();
-            })
-    });
-})
+});
