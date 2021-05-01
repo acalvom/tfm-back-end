@@ -8,5 +8,6 @@ router.use(helmet.hidePoweredBy());
 
 router.get('/users', middleware.isAdmin, usersController.getAllUsers);
 router.get('/users/students', middleware.isTeacher, usersController.getAllStudents);
+router.delete('/users/:email', middleware.isAdmin, usersController.deleteUser);
 
 module.exports = router;

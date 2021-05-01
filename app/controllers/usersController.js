@@ -24,5 +24,16 @@ usersController.getAllStudents = (req, res) => {
     });
 }
 
+usersController.deleteUser = (req, res) => {
+    let email = req.params.email;
+    sql = 'DELETE FROM users WHERE email = ?';
+    connection.query(sql, [email], function (err) {
+        if (!err)
+            res.status(httpCode.codes.NOCONTENT).json(['User ' + email + ' deleted successfully']);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['User ' + email + ' is not found']);
+    });
+}
+
 module.exports = usersController;
 
