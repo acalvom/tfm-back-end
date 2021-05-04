@@ -11,7 +11,7 @@ const connection = require('../../app/database/database');
 
 const url = 'http://localhost:8000';
 let adminToken, teacherToken, studentToken;
-let data;
+let data, editedUser;
 
 chai.use(chaiHttp);
 
@@ -64,20 +64,76 @@ describe('Testing Users', function () {
                     })
             });
         });
-        describe('Delete User', function () {
+
+        describe('Update User', function () {
             before(function () {
                 data = {
-                    name: "userToDeleteName",
-                    surname: "userToDeleteSurname",
-                    dni: "12345678J",
+                    name: "userToTestName",
+                    surname: "userToTestSurname",
+                    dni: "12345678X",
                     gender: "woman",
-                    email: "userToDeleteEmail@email",
-                    password: CryptoJS.AES.encrypt('userToDeletePass', 'password').toString(),
-                    penalties: 0,
-                    role: "student"
+                    email: "userToTestEmail@email",
+                    password: CryptoJS.AES.encrypt('userToTestPass', 'password').toString(),
+                    role: "teacher"
                 }
                 sql = 'INSERT INTO users SET ?';
                 connection.query(sql, [data]);
+                editedUser = {
+                    name: "editedName",
+                    surname: "editedSurname",
+                    dni: "",
+                    gender: "man",
+                    email: "editedEmail@email"
+                }
+            });
+
+            it('should return an unauthorized code because role is teacher', function (done) {
+                chai.request(url)
+                    .put("/users/" + data.email)
+                    .set('Authorization', teacherToken)
+                    .send(editedUser)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        done();
+                    })
+            });
+
+            it('should return an unauthorized code because role is student', function (done) {
+                chai.request(url)
+                    .put("/users/" + data.email)
+                    .set('Authorization', studentToken)
+                    .send(editedUser)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        done();
+                    })
+            });
+
+            it('should return an not found code because user not exists', function (done) {
+                chai.request(url)
+                    .put("/users/userNotExist@email")
+                    .set('Authorization', adminToken)
+                    .send(editedUser)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                        done();
+                    })
+            });
+
+            it('should update an user', function (done) {
+                chai.request(url)
+                    .put("/users/" + data.email)
+                    .set('Authorization', adminToken)
+                    .send(editedUser)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                        done();
+                    })
+            });
+        });
+        describe('Delete User', function () {
+            before(function () {
+                data = editedUser;
             });
 
             it('should return an unauthorized code because role is teacher', function (done) {

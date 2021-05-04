@@ -35,5 +35,17 @@ usersController.deleteUser = (req, res) => {
     });
 }
 
+usersController.editUser = (req, res) => {
+    let email = req.params.email;
+    let user = req.body;
+    sql = 'UPDATE users SET ? WHERE email = ?';
+    connection.query(sql, [user, email], function (err, result) {
+        if (!err && result.affectedRows > 0)
+            res.status(httpCode.codes.NOCONTENT).json(['User updated successfully']);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['User ' + email + ' is not found']);
+    });
+}
+
 module.exports = usersController;
 
