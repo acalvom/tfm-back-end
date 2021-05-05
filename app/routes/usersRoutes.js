@@ -11,5 +11,6 @@ router.get('/users/students', middleware.isTeacher, usersController.getAllStuden
 router.get('/users/:email', middleware.isAuthenticated, usersController.getUserByEmail);
 router.delete('/users/:email', middleware.isAdmin, usersController.deleteUser);
 router.put('/users/:email', middleware.isAdmin, usersController.editUser);
+router.post('/users/password', middleware.isAuthenticated, usersController.changePassword);
 
 module.exports = router;
