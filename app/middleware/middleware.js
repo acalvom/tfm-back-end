@@ -27,6 +27,19 @@ function tokenProvided(req, res) {
         res.status(httpCode.codes.NOCONTENT).json('No token provided');
 }
 
+middleware.isAuthenticated = (req, res, next) => {
+    let token = tokenProvided(req, res);
+    if (token) {
+        jwt.verify(token, readKey(), (err, decoded) => {
+            if (!err) {
+                req.decoded = decoded;
+                next();
+            } else
+                res.status(httpCode.codes.UNAUTHORIZED).json('You are not logged');
+        });
+    }
+}
+
 middleware.isAdmin = (req, res, next) => {
     let token = tokenProvided(req, res);
     if (token) {
