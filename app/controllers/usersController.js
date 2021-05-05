@@ -24,6 +24,17 @@ usersController.getAllStudents = (req, res) => {
     });
 }
 
+usersController.getUserByEmail = (req, res) => {
+    let email = req.params.email;
+    sql = 'SELECT * FROM users WHERE email = ?';
+    connection.query(sql, [email], function (err, user) {
+        if (!err && user.length === 1)
+            res.status(httpCode.codes.OK).json(user);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['User ' + email + ' is not found']);
+    });
+}
+
 usersController.deleteUser = (req, res) => {
     let email = req.params.email;
     sql = 'DELETE FROM users WHERE email = ?';
