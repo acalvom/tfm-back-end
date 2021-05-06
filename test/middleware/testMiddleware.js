@@ -4,7 +4,7 @@ const mocha = require('mocha');
 const describe = mocha.describe;
 
 const middleware = require('../../app/middleware/middleware');
-const NO_TOKEN = 'Undefined email or password'
+const NO_TOKEN_GENERATED = require('../../app/resources/constants').NO_TOKEN_GENERATED;
 
 describe('Testing Middleware', function () {
     it('should return a new token', function () {
@@ -15,6 +15,6 @@ describe('Testing Middleware', function () {
     it('should return error as value for an empty token', function () {
         let token = middleware.generateToken();
         expect(token).to.be.a('string');
-        expect(token).to.equal(NO_TOKEN);
+        expect(token).to.equal(NO_TOKEN_GENERATED);
     });
 });

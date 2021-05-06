@@ -3,12 +3,12 @@ const bcrypt = require('bcrypt');
 const connection = require('../database/database');
 const middleware = require('../middleware/middleware');
 const httpCode = require('../resources/httpCodes');
+const SALT_ROUNDS = require('../resources/constants').SALT_ROUNDS;
 
 const authController = {}
 
 let token, sql;
 let newUser;
-const saltRounds = 10;
 
 authController.register = (req, res) => {
     let user = req.body;
@@ -55,7 +55,7 @@ function setToken(role, res) {
 
 function encryptDBPassword(user) {
     let decryptedBodyPassword = CryptoJS.AES.decrypt(user.password, 'password').toString(CryptoJS.enc.Utf8);
-    user.password = bcrypt.hashSync(decryptedBodyPassword, saltRounds);
+    user.password = bcrypt.hashSync(decryptedBodyPassword, SALT_ROUNDS);
     return user;
 }
 
