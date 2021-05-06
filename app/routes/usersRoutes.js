@@ -12,5 +12,7 @@ router.get('/users/:email', middleware.isAuthenticated, usersController.getUserB
 router.delete('/users/:email', middleware.isAdmin, usersController.deleteUser);
 router.put('/users/:email', middleware.isAdmin, usersController.editUser);
 router.post('/users/password', middleware.isAuthenticated, usersController.changePassword);
+router.post('/users/phone', middleware.isAuthenticated, usersController.addPhone);
+
 
 module.exports = router;

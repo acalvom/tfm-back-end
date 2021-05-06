@@ -87,6 +87,17 @@ usersController.changePassword = (req, res) => {
     }
 }
 
+usersController.addPhone = (req, res) => {
+    let email = req.body.userEmail;
+    let phone = req.body.phone;
+    sql = 'UPDATE users SET phone = ? WHERE email = ?';
+    connection.query(sql, [phone, email], function (err, result) {
+        if (!err && result.affectedRows > 0)
+            res.status(httpCode.codes.NOCONTENT).json(['Phone added successfully']);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['User ' + email + ' is not found']);
+    });
+}
 
 module.exports = usersController;
 
