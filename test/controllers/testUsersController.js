@@ -305,6 +305,15 @@ describe('Testing Users', function () {
 
     describe('Authenticated User', function () {
         describe('Get User By Email', function () {
+            it('should return an unauthorized code because of a bad token', function (done) {
+                chai.request(BASE_URL)
+                    .get("/users/" + studentEmail)
+                    .set('Authorization', "Bearer badToken")
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        done();
+                    })
+            });
             it('should return no content because there is no token provided', function (done) {
                 chai.request(BASE_URL)
                     .get("/users/" + studentEmail)
