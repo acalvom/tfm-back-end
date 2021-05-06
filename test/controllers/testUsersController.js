@@ -8,8 +8,8 @@ const CryptoJS = require("crypto-js");
 const httpCode = require('../../app/resources/httpCodes');
 const middleware = require('../../app/middleware/middleware');
 const connection = require('../../app/database/database');
+const BASE_URL = require('../../app/resources/constants').BASE_URL;
 
-const url = 'http://localhost:8000';
 let adminToken, teacherToken, studentToken;
 let superuserEmail, teacherEmail, studentEmail
 let data, editedUser;
@@ -30,7 +30,7 @@ describe('Testing Users', function () {
     describe('Admin Role', function () {
         describe('Get Users', function () {
             it('should return no content because there is no token provided', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .get("/users")
                     .end(function (err, res) {
                         expect(res).to.have.status(httpCode.codes.NOCONTENT);
@@ -39,7 +39,7 @@ describe('Testing Users', function () {
             });
 
             it('should return an array of users', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .get("/users")
                     .set('Authorization', adminToken)
                     .end(function (err, res) {
@@ -50,7 +50,7 @@ describe('Testing Users', function () {
             });
 
             it('should return an unauthorized code because role is teacher', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .get("/users")
                     .set('Authorization', teacherToken)
                     .end(function (err, res) {
@@ -60,7 +60,7 @@ describe('Testing Users', function () {
             });
 
             it('should return an unauthorized code because role is student', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .get("/users")
                     .set('Authorization', studentToken)
                     .end(function (err, res) {
@@ -80,7 +80,7 @@ describe('Testing Users', function () {
                     password: CryptoJS.AES.encrypt('userToTestPass', 'password').toString(),
                     role: "teacher"
                 }
-                sql = 'INSERT INTO users SET ?';
+                let sql = 'INSERT INTO users SET ?';
                 connection.query(sql, [data]);
                 editedUser = {
                     name: "editedName",
@@ -92,7 +92,7 @@ describe('Testing Users', function () {
             });
 
             it('should return an unauthorized code because role is teacher', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .put("/users/" + data.email)
                     .set('Authorization', teacherToken)
                     .send(editedUser)
@@ -103,7 +103,7 @@ describe('Testing Users', function () {
             });
 
             it('should return an unauthorized code because role is student', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .put("/users/" + data.email)
                     .set('Authorization', studentToken)
                     .send(editedUser)
@@ -114,7 +114,7 @@ describe('Testing Users', function () {
             });
 
             it('should return an not found code because user not exists', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .put("/users/userNotExist@email")
                     .set('Authorization', adminToken)
                     .send(editedUser)
@@ -125,7 +125,7 @@ describe('Testing Users', function () {
             });
 
             it('should update an user', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .put("/users/" + data.email)
                     .set('Authorization', adminToken)
                     .send(editedUser)
@@ -141,7 +141,7 @@ describe('Testing Users', function () {
             });
 
             it('should return an unauthorized code because role is teacher', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .delete("/users/" + data.email)
                     .set('Authorization', teacherToken)
                     .end(function (err, res) {
@@ -151,7 +151,7 @@ describe('Testing Users', function () {
             });
 
             it('should return an unauthorized code because role is student', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .delete("/users/" + data.email)
                     .set('Authorization', studentToken)
                     .end(function (err, res) {
@@ -161,7 +161,7 @@ describe('Testing Users', function () {
             });
 
             it('should return an not found code because user not exists', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .delete("/users/userNotExist@email")
                     .set('Authorization', adminToken)
                     .end(function (err, res) {
@@ -171,7 +171,7 @@ describe('Testing Users', function () {
             });
 
             it('should delete an user', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .delete("/users/" + data.email)
                     .set('Authorization', adminToken)
                     .end(function (err, res) {
@@ -185,7 +185,7 @@ describe('Testing Users', function () {
     describe('Teacher Role', function () {
         describe('Get Students', function () {
             it('should return no content because there is no token provided', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .get("/users/students")
                     .end(function (err, res) {
                         expect(res).to.have.status(httpCode.codes.NOCONTENT);
@@ -193,7 +193,7 @@ describe('Testing Users', function () {
                     })
             });
             it('should return an array of users', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .get("/users/students")
                     .set('Authorization', teacherToken)
                     .end(function (err, res) {
@@ -203,7 +203,7 @@ describe('Testing Users', function () {
                     })
             });
             it('should return an unauthorized code because role is admin', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .get("/users/students")
                     .set('Authorization', adminToken)
                     .end(function (err, res) {
@@ -212,7 +212,7 @@ describe('Testing Users', function () {
                     })
             });
             it('should return an unauthorized code because role is student', function (done) {
-                chai.request(url)
+                chai.request(BASE_URL)
                     .get("/users/students")
                     .set('Authorization', studentToken)
                     .end(function (err, res) {
@@ -226,7 +226,7 @@ describe('Testing Users', function () {
 
     describe('Get User By Email', function () {
         it('should return no content because there is no token provided', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .get("/users/" + studentEmail)
                 .end(function (err, res) {
                     expect(res).to.have.status(httpCode.codes.NOCONTENT);
@@ -234,7 +234,7 @@ describe('Testing Users', function () {
                 })
         });
         it('should return not found because the user does not exists', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .get("/users/noEmail@email")
                 .set('Authorization', adminToken)
                 .end(function (err, res) {
@@ -243,7 +243,7 @@ describe('Testing Users', function () {
                 })
         });
         it('should return the student user -- Student Role', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .get("/users/" + studentEmail)
                 .set('Authorization', studentToken)
                 .end(function (err, res) {
@@ -260,7 +260,7 @@ describe('Testing Users', function () {
                 })
         });
         it('should return the teacher user -- Teacher Role', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .get("/users/" + teacherEmail)
                 .set('Authorization', teacherToken)
                 .end(function (err, res) {
@@ -273,7 +273,7 @@ describe('Testing Users', function () {
                 })
         });
         it('should return the admin user -- Admin Role', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .get("/users/" + superuserEmail)
                 .set('Authorization', adminToken)
                 .end(function (err, res) {

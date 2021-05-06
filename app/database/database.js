@@ -1,7 +1,6 @@
 const mysql = require('mysql');
 const connectionData = require('./databaseManager');
-const DB_ERROR = "Database Server Error";
-const DB_OK = "Database Is Connected";
+const DB_CODE = require('../resources/constants');
 
 const connection = mysql.createConnection({
     host: connectionData.connectionData.host,
@@ -11,6 +10,6 @@ const connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
-    err ? console.log(DB_ERROR) : console.log(DB_OK);
+    err ? console.log(DB_CODE.DB_ERROR) : console.log(DB_CODE.DB_OK);
 });
 module.exports = connection;

@@ -1,9 +1,8 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const MINUTES = 100;
-const SECONDS_PER_MINUTE = 60;
-const NO_TOKEN = 'Undefined email or password'
+
 const httpCode = require('../resources/httpCodes');
+const PARAMETERS = require('../resources/constants');
 
 const middleware = {}
 
@@ -16,8 +15,8 @@ middleware.generateToken = (email, role) => {
         "email": email,
         "role": role
     };
-    let expiryTime = SECONDS_PER_MINUTE * MINUTES;
-    return newPayload.email == null ? NO_TOKEN : jwt.sign(newPayload, readKey(), {expiresIn: expiryTime})
+    let expiryTime = PARAMETERS.SECONDS_PER_MINUTE * PARAMETERS.MINUTES;
+    return newPayload.email == null ? PARAMETERS.NO_TOKEN_GENERATED : jwt.sign(newPayload, readKey(), {expiresIn: expiryTime})
 }
 
 function tokenProvided(req, res) {

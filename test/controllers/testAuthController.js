@@ -7,9 +7,9 @@ const describe = mocha.describe;
 const CryptoJS = require("crypto-js");
 const httpCode = require('../../app/resources/httpCodes');
 const middleware = require('../../app/middleware/middleware');
+const BASE_URL = require('../../app/resources/constants').BASE_URL;
 
 chai.use(chaiHttp);
-const url = 'http://localhost:8000';
 let data;
 let adminToken, teacherToken;
 
@@ -20,7 +20,7 @@ describe('Testing AuthController', function () {
         });
 
         it('should return a valid token', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .post("/users/login")
                 .send(data)
                 .end(function (err, res) {
@@ -32,7 +32,7 @@ describe('Testing AuthController', function () {
         });
 
         it('should return a not valid token', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .post("/users/login")
                 .send(data)
                 .end(function (err, res) {
@@ -45,7 +45,7 @@ describe('Testing AuthController', function () {
         });
 
         it('should return no token', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .post("/users/login")
                 .send(data)
                 .end(function (err, res) {
@@ -57,7 +57,7 @@ describe('Testing AuthController', function () {
         });
 
         it('should return a user not found in login', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .post("/users/login")
                 .send({email: 'nouser@academy.com', password: data.password})
                 .end(function (err, res) {
@@ -67,7 +67,7 @@ describe('Testing AuthController', function () {
         });
 
         it('should return a wrong password in login', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .post("/users/login")
                 .send({email: data.email, password: CryptoJS.AES.encrypt('aa', 'password').toString()})
                 .end(function (err, res) {
@@ -77,7 +77,7 @@ describe('Testing AuthController', function () {
         });
 
         it('should return no email/password provided in login', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .post("/users/login")
                 .send({email: '', password: ''})
                 .end(function (err, res) {
@@ -104,7 +104,7 @@ describe('Testing AuthController', function () {
         });
 
         it('should register new user', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .post("/users/register")
                 .set('Authorization', adminToken)
                 .send(data)
@@ -116,7 +116,7 @@ describe('Testing AuthController', function () {
         });
 
         it('should return error when register an exiting user', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .post("/users/register")
                 .set('Authorization', adminToken)
                 .send(data)
@@ -127,7 +127,7 @@ describe('Testing AuthController', function () {
         });
 
         it('should return unauthorized when register a new user', function (done) {
-            chai.request(url)
+            chai.request(BASE_URL)
                 .post("/users/register")
                 .set('Authorization', teacherToken)
                 .send(data)
@@ -139,7 +139,7 @@ describe('Testing AuthController', function () {
 
         it('should return no content because the body is empty', function (done) {
             data = {}
-            chai.request(url)
+            chai.request(BASE_URL)
                 .post("/users/register")
                 .set('Authorization', adminToken)
                 .end(function (err, res) {
