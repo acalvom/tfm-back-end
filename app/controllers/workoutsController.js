@@ -20,4 +20,14 @@ workoutsController.createWorkout = (req, res) => {
     }
 }
 
+workoutsController.getAllWorkouts = (req, res) => {
+    sql = 'SELECT * FROM workouts';
+    connection.query(sql, function (err, workouts) {
+        if (!err && workouts.length > 0) {
+            res.status(httpCode.codes.OK).json(workouts);
+        } else
+            res.status(httpCode.codes.NOTFOUND).json('Workouts not found');
+    });
+}
+
 module.exports = workoutsController;

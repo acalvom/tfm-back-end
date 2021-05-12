@@ -7,5 +7,6 @@ const router = express.Router();
 router.use(helmet.hidePoweredBy());
 
 router.post('/workouts/create', middleware.isTeacher, workoutsController.createWorkout);
+router.get('/workouts', middleware.isAuthenticated, workoutsController.getAllWorkouts);
 
 module.exports = router;
