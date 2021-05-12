@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const port = 8000;
 const authRoutes = require('./app/routes/authRoutes');
 const usersRoutes = require('./app/routes/usersRoutes');
+const workoutsRoutes = require('./app/routes/workoutsRoutes');
 
 
 app.disable("x-powered-by");
@@ -30,6 +31,6 @@ app.get('/', (req, res) => {
 
 app.use(authRoutes);
 app.use(usersRoutes);
-
+app.use(workoutsRoutes);
 
 module.exports = app;
