@@ -8,7 +8,6 @@ const httpCode = require('../../app/resources/httpCodes');
 const testSetup = require("./testsSetup");
 const BASE_URL = require('../../app/resources/constants').BASE_URL;
 
-let sql;
 let workout, workoutId;
 let teacherToken;
 
@@ -60,7 +59,6 @@ describe('Testing Workouts', function () {
         });
 
         it('should return INTERNAL SERVER ERROR because the body is empty', function (done) {
-            workout = {}
             chai.request(BASE_URL)
                 .post("/workouts/create")
                 .set('Authorization', teacherToken)
@@ -84,11 +82,25 @@ describe('Testing Workouts', function () {
         });
     });
 
-    after(function () {
-        // TEMPORAL. NEED TO IMPLEMENT DELETE WORKOUT
-        const connection = require('../../app/database/database');
-        sql = 'DELETE FROM workouts WHERE id = ?';
-        connection.query(sql, workoutId);
-    })
+    describe('Delete Workout', function () {
+        it('should delete a workout', function (done) {
+            chai.request(BASE_URL)
+                .delete("/workouts/" + workoutId)
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    done();
+                })
+        });
 
+        it('should return NOT FOUND code because workout does not exist', function (done) {
+            chai.request(BASE_URL)
+                .delete("/workouts/" + workoutId)
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                    done();
+                })
+        });
+    });
 });
