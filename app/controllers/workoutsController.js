@@ -30,4 +30,15 @@ workoutsController.getAllWorkouts = (req, res) => {
     });
 }
 
+workoutsController.deleteWorkout = (req, res) => {
+    let id = req.params.id;
+    sql = 'DELETE FROM workouts WHERE id = ?';
+    connection.query(sql, [id], function (err, result) {
+        if (!err && result.affectedRows > 0)
+            res.status(httpCode.codes.NOCONTENT).json(['Workout ' + id + ' deleted successfully']);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['Workout ' + id + ' is not found']);
+    });
+}
+
 module.exports = workoutsController;
