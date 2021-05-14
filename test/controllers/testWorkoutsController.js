@@ -82,6 +82,42 @@ describe('Testing Workouts', function () {
         });
     });
 
+    describe('Update Workout', function () {
+        before(function () {
+            workout = {
+                title: 'editedWorkoutTitle',
+                description: 'This is editedWorkout description',
+                circuit: false,
+                race: false,
+                bar: false,
+                pullUps: false,
+                fitness: 'This is the fitness routine for editedWorkout',
+                comments: 'These are the comments for editedWorkout',
+            }
+        });
+
+        it('should return NOT FOUND because workout does not exist', function (done) {
+            chai.request(BASE_URL)
+                .put("/workouts/" + workoutId + 1)
+                .set('Authorization', teacherToken)
+                .send(workout)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                    done();
+                })
+        });
+        it('should update an user', function (done) {
+            chai.request(BASE_URL)
+                .put("/workouts/" + workoutId)
+                .set('Authorization', teacherToken)
+                .send(workout)
+                .end(function (err, res) {console.log(res)
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    done();
+                })
+        });
+    });
+
     describe('Delete Workout', function () {
         it('should delete a workout', function (done) {
             chai.request(BASE_URL)
