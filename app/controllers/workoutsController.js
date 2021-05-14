@@ -41,4 +41,16 @@ workoutsController.deleteWorkout = (req, res) => {
     });
 }
 
+workoutsController.editWorkout = (req, res) => {
+    let id = req.params.id;
+    let workout = req.body;
+    sql = 'UPDATE workouts SET ? WHERE id = ?';
+    connection.query(sql, [workout, id], function (err, result) {
+        if (!err && result.affectedRows > 0)
+            res.status(httpCode.codes.NOCONTENT).json(['Workout updated successfully']);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['Workout ' + id + ' is not found']);
+    });
+}
+
 module.exports = workoutsController;
