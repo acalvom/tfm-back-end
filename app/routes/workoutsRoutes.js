@@ -10,5 +10,6 @@ router.post('/workouts/create', middleware.isTeacher, workoutsController.createW
 router.get('/workouts', middleware.isAuthenticated, workoutsController.getAllWorkouts);
 router.delete('/workouts/:id', middleware.isTeacher, workoutsController.deleteWorkout);
 router.put('/workouts/:id', middleware.isTeacher, workoutsController.editWorkout);
+router.get('/workouts/:id', middleware.isTeacher, workoutsController.getWorkoutById);
 
 module.exports = router;
