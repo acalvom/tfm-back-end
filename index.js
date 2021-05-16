@@ -7,7 +7,7 @@ const port = 8000;
 const authRoutes = require('./app/routes/authRoutes');
 const usersRoutes = require('./app/routes/usersRoutes');
 const workoutsRoutes = require('./app/routes/workoutsRoutes');
-
+const classesRoutes = require('./app/routes/classesRoutes');
 
 app.disable("x-powered-by");
 app.use(bodyParser.urlencoded({
@@ -32,5 +32,6 @@ app.get('/', (req, res) => {
 app.use(authRoutes);
 app.use(usersRoutes);
 app.use(workoutsRoutes);
+app.use(classesRoutes);
 
 module.exports = app;
