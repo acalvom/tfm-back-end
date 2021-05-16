@@ -53,4 +53,15 @@ workoutsController.editWorkout = (req, res) => {
     });
 }
 
+workoutsController.getWorkoutById = (req, res) => {
+    let id = req.params.id;
+    sql = 'SELECT * FROM workouts WHERE id = ?';
+    connection.query(sql, [id], function (err, workout) {
+        if (!err && workout.length === 1) {
+            res.status(httpCode.codes.OK).json(workout);
+        } else
+            res.status(httpCode.codes.NOTFOUND).json('Workout ' + id + ' not found');
+    });
+}
+
 module.exports = workoutsController;
