@@ -82,6 +82,32 @@ describe('Testing Workouts', function () {
         });
     });
 
+    describe('Get Workout By ID', function () {
+        it('should return a single workout', function (done) {
+            chai.request(BASE_URL)
+                .get("/workouts/" + workoutId)
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.OK);
+                    expect(res.body).to.be.a('array');
+                    expect(res.body[0]).to.have.property('id').to.be.equal(workoutId);
+                    expect(res.body[0].title).not.be.null;
+                    expect(res.body[0].description).not.be.null;
+                    done();
+                })
+        });
+
+        it('should return NOT FOUND because the workout does not exist', function (done) {
+            chai.request(BASE_URL)
+                .get("/workouts/" + workoutId + 1)
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                    done();
+                })
+        });
+    });
+
     describe('Update Workout', function () {
         before(function () {
             workout = {
@@ -111,7 +137,7 @@ describe('Testing Workouts', function () {
                 .put("/workouts/" + workoutId)
                 .set('Authorization', teacherToken)
                 .send(workout)
-                .end(function (err, res) {console.log(res)
+                .end(function (err, res) {
                     expect(res).to.have.status(httpCode.codes.NOCONTENT);
                     done();
                 })
