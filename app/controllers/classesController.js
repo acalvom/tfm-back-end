@@ -21,4 +21,15 @@ classesController.createClass = (req, res) => {
     }
 }
 
+classesController.getAllClasses = (req, res) => {
+    sql = 'SELECT * FROM classes';
+    connection.query(sql, function (err, classes) {
+        if (!err && classes.length > 0) {
+            // console.log(classes)
+            res.status(httpCode.codes.OK).json(classes);
+        } else
+            res.status(httpCode.codes.NOTFOUND).json('Classes not found');
+    });
+}
+
 module.exports = classesController;
