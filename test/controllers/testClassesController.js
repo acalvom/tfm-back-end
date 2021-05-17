@@ -19,6 +19,19 @@ describe('Testing Classes', function () {
         teacherToken = testSetup.getTeacherToken();
     });
 
+    describe('Get All Classes', function () {
+        it('should return an array of classes', function (done) {
+            chai.request(BASE_URL)
+                .get("/classes")
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.OK);
+                    expect(res.body).to.be.a('array');
+                    done();
+                })
+        });
+    });
+
     describe('Create Class', function () {
         before(function () {
             workout = {
