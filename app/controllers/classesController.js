@@ -36,7 +36,7 @@ classesController.deleteClass = (req, res) => {
     let code = req.params.code;
     sql = 'DELETE FROM classes WHERE code = ?';
     connection.query(sql, [code], function (err, result) {
-        console.log(code)
+        // console.log(code)
         if (!err && result.affectedRows > 0)
             res.status(httpCode.codes.NOCONTENT).json(['Class ' + code + ' deleted successfully']);
         else
