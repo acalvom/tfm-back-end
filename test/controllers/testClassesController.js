@@ -77,6 +77,17 @@ describe('Testing Classes', function () {
                 })
         });
 
+        it('should return FORBIDDEN code because workout is assign to a class', function (done) {
+            chai.request(BASE_URL)
+                .delete("/workouts/" + workoutId)
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                    done();
+                })
+        });
+
+
         it('should return CONFLICT because the class already exists', function (done) {
             chai.request(BASE_URL)
                 .post("/classes/create")
@@ -100,6 +111,7 @@ describe('Testing Classes', function () {
                 })
         });
     });
+
 
     after(function () {
         connection.query('DELETE FROM classes WHERE id = ?', classId);
