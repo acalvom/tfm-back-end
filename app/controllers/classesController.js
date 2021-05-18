@@ -10,7 +10,7 @@ classesController.createClass = (req, res) => {
         res.status(httpCode.codes.NOCONTENT).json('No class sent');
     else {
         sql = 'INSERT INTO classes SET ?';
-        // console.log(newClass)
+        //console.log(newClass)
         connection.query(sql, [newClass], function (err, resultDB) {
             if (!err) {
                 newClass.id = resultDB.insertId;
@@ -29,6 +29,18 @@ classesController.getAllClasses = (req, res) => {
             res.status(httpCode.codes.OK).json(classes);
         } else
             res.status(httpCode.codes.NOTFOUND).json('Classes not found');
+    });
+}
+
+classesController.deleteClass = (req, res) => {
+    let code = req.params.code;
+    sql = 'DELETE FROM classes WHERE code = ?';
+    connection.query(sql, [code], function (err, result) {
+        // console.log(code)
+        if (!err && result.affectedRows > 0)
+            res.status(httpCode.codes.NOCONTENT).json(['Class ' + code + ' deleted successfully']);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['Class ' + code + ' is not found']);
     });
 }
 

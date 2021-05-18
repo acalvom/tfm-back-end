@@ -9,7 +9,7 @@ const testSetup = require("./testsSetup");
 const BASE_URL = require('../../app/resources/constants').BASE_URL;
 const connection = require('../../app/database/database');
 
-let newClass, classId, workout, workoutId;
+let newClass, classCode, workout, workoutId;
 let teacherToken;
 
 chai.use(chaiHttp);
@@ -72,7 +72,17 @@ describe('Testing Classes', function () {
                 .end(function (err, res) {
                     expect(res).to.have.status(httpCode.codes.CREATED);
                     expect(res.body).to.be.a('object');
-                    classId = res.body.id;
+                    classCode = res.body.code;
+                    done();
+                })
+        });
+
+        it('should return FORBIDDEN code because workout is assign to a class', function (done) {
+            chai.request(BASE_URL)
+                .delete("/workouts/" + workoutId)
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                     done();
                 })
         });
@@ -101,8 +111,29 @@ describe('Testing Classes', function () {
         });
     });
 
+    describe('Delete Class', function () {
+        it('should delete a class', function (done) {
+            chai.request(BASE_URL)
+                .delete("/classes/" + classCode)
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    done();
+                })
+        });
+
+        it('should return NOT FOUND code because the class does not exist', function (done) {
+            chai.request(BASE_URL)
+                .delete("/classes/" + classCode)
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                    done();
+                })
+        });
+    });
+
     after(function () {
-        connection.query('DELETE FROM classes WHERE id = ?', classId);
         connection.query('DELETE FROM workouts WHERE id = ?', workoutId);
     })
 })

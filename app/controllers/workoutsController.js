@@ -36,7 +36,10 @@ workoutsController.deleteWorkout = (req, res) => {
     connection.query(sql, [id], function (err, result) {
         if (!err && result.affectedRows > 0)
             res.status(httpCode.codes.NOCONTENT).json(['Workout ' + id + ' deleted successfully']);
-        else
+        else if (err) {
+            if (err.code === 'ER_ROW_IS_REFERENCED_2')
+                res.status(httpCode.codes.FORBIDDEN).json(['Workout ' + id + ' cannot be delete because it is assign to a class']);
+        } else
             res.status(httpCode.codes.NOTFOUND).json(['Workout ' + id + ' is not found']);
     });
 }
