@@ -7,7 +7,6 @@ const describe = mocha.describe;
 const httpCode = require('../../app/resources/httpCodes');
 const testSetup = require("./testsSetup");
 const BASE_URL = require('../../app/resources/constants').BASE_URL;
-const connection = require('../../app/database/database');
 
 let newClass, classCode, workout, workoutId;
 let teacherToken;
@@ -56,8 +55,6 @@ describe('Testing Classes', function () {
                 .set('Authorization', teacherToken)
                 .send(workout)
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.CREATED);
-                    expect(res.body).to.be.a('object');
                     workoutId = res.body.id;
                     done();
                 })
@@ -111,6 +108,39 @@ describe('Testing Classes', function () {
         });
     });
 
+    describe('Update Class', function () {
+        before(function () {
+            newClass = {
+                init_day_hour: new Date("December 17, 1996 03:24:00"),
+                end_day_hour: new Date("December 19, 1996 03:24:00"),
+                max_places: 30,
+                location: 'newClassEditedLocation',
+                location_details: 'newClassEditedLocationDetails'
+            }
+        });
+
+        it('should return NOT FOUND because class does not exist', function (done) {
+            chai.request(BASE_URL)
+                .put("/classes/notAClass")
+                .set('Authorization', teacherToken)
+                .send(newClass)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                    done();
+                })
+        });
+        it('should update a class', function (done) {
+            chai.request(BASE_URL)
+                .put("/classes/" + classCode)
+                .set('Authorization', teacherToken)
+                .send(newClass)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    done();
+                })
+        });
+    });
+
     describe('Delete Class', function () {
         it('should delete a class', function (done) {
             chai.request(BASE_URL)
@@ -131,9 +161,14 @@ describe('Testing Classes', function () {
                     done();
                 })
         });
-    });
 
-    after(function () {
-        connection.query('DELETE FROM workouts WHERE id = ?', workoutId);
-    })
+        it('should delete the workout', function (done) {
+            chai.request(BASE_URL)
+                .delete("/workouts/" + workoutId)
+                .set('Authorization', teacherToken)
+                .end(function () {
+                    done();
+                })
+        });
+    });
 })
