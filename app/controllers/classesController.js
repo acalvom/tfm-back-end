@@ -44,4 +44,17 @@ classesController.deleteClass = (req, res) => {
     });
 }
 
+classesController.editClass = (req, res) => {
+    let code = req.params.code;
+    let editedClass = req.body;
+    sql = 'UPDATE classes SET ? WHERE code = ?';
+    // console.log(code, editedClass)
+    connection.query(sql, [editedClass, code], function (err, result) {
+        if (!err && result.affectedRows > 0)
+            res.status(httpCode.codes.NOCONTENT).json(['Class updated successfully']);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['Class ' + code + ' is not found']);
+    });
+}
+
 module.exports = classesController;

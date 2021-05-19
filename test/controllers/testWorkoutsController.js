@@ -132,7 +132,7 @@ describe('Testing Workouts', function () {
                     done();
                 })
         });
-        it('should update an user', function (done) {
+        it('should update a workout', function (done) {
             chai.request(BASE_URL)
                 .put("/workouts/" + workoutId)
                 .set('Authorization', teacherToken)
