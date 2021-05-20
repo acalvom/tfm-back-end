@@ -18,7 +18,20 @@ reservesController.createReserve = (req, res) => {
             } else
                 res.status(httpCode.codes.CONFLICT).json('This reserve already exists: ' + err.sqlMessage);
         });
+        updatePlaces(1, reserve.code_class)
     }
+}
+
+function updatePlaces(number, code) {
+    sql = 'SELECT current_places FROM classes WHERE code = ?';
+    connection.query(sql, [code], function (err, currentPlaces) {
+        if (!err) {
+            let updatePlaces = currentPlaces[0].current_places + number;
+            // console.log('currentPlaces ' , updatePlaces)
+            sql = 'UPDATE classes SET current_places = ? WHERE code = ?';
+            connection.query(sql, [updatePlaces, code]);
+        }
+    })
 }
 
 module.exports = reservesController;
