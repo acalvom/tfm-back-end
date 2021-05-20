@@ -8,6 +8,7 @@ const authRoutes = require('./app/routes/authRoutes');
 const usersRoutes = require('./app/routes/usersRoutes');
 const workoutsRoutes = require('./app/routes/workoutsRoutes');
 const classesRoutes = require('./app/routes/classesRoutes');
+const reservesRoutes = require('./app/routes/reservesRoutes');
 
 app.disable("x-powered-by");
 app.use(bodyParser.urlencoded({
@@ -33,5 +34,6 @@ app.use(authRoutes);
 app.use(usersRoutes);
 app.use(workoutsRoutes);
 app.use(classesRoutes);
+app.use(reservesRoutes);
 
 module.exports = app;
