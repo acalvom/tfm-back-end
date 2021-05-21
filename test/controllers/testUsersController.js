@@ -303,6 +303,36 @@ describe('Testing Users', function () {
         });
     });
 
+    describe('Student Role', function () {
+        it('should return no content because there is no token provided', function (done) {
+            chai.request(BASE_URL)
+                .post("/reserves/create")
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    done();
+                })
+        });
+
+        it('should return an unauthorized code because role is admin', function (done) {
+            chai.request(BASE_URL)
+                .post("/reserves/create")
+                .set('Authorization', adminToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                    done();
+                })
+        });
+        it('should return an unauthorized code because role is teacher', function (done) {
+            chai.request(BASE_URL)
+                .post("/reserves/create")
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                    done();
+                })
+        });
+    });
+
     describe('Authenticated User', function () {
         describe('Get User By Email', function () {
             it('should return an unauthorized code because of a bad token', function (done) {

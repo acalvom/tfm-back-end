@@ -65,4 +65,17 @@ middleware.isTeacher = (req, res, next) => {
     }
 }
 
+middleware.isStudent = (req, res, next) => {
+    let token = tokenProvided(req, res);
+    if (token) {
+        jwt.verify(token, readKey(), (err, decoded) => {
+            if (!err && decoded.role === 'student') {
+                req.decoded = decoded;
+                next();
+            } else
+                res.status(httpCode.codes.UNAUTHORIZED).json('You are not a student');
+        });
+    }
+}
+
 module.exports = middleware;
