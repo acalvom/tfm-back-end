@@ -12,6 +12,7 @@ const SALT_ROUNDS = require('../../app/resources/constants').SALT_ROUNDS;
 
 let aClass, aClassCode, workout, workoutId, user, userEmail, reserve, reserveId;
 let studentToken, teacherToken, adminToken;
+let sql;
 
 chai.use(chaiHttp);
 
@@ -100,4 +101,15 @@ describe('Testing Reserves', function () {
                 })
         });
     });
+
+    after(function () {
+        // TEMPORAL
+        const connection = require('../../app/database/database');
+        sql = 'DELETE FROM users WHERE email = ?';
+        connection.query(sql, userEmail);
+        sql = 'DELETE FROM classes WHERE code = ?';
+        connection.query(sql, aClassCode);
+        sql = 'DELETE FROM workouts WHERE id = ?';
+        connection.query(sql, workoutId);
+    })
 })
