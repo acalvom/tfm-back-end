@@ -88,7 +88,7 @@ describe('Testing Reserves', function () {
                 })
         });
 
-        it('should create a reserve', function (done) {
+        it('should CREATE a reserve', function (done) {
             chai.request(BASE_URL)
                 .post("/reserves/create")
                 .set('Authorization', studentToken)
@@ -97,6 +97,17 @@ describe('Testing Reserves', function () {
                     expect(res).to.have.status(httpCode.codes.CREATED);
                     expect(res.body).to.be.a('object');
                     reserveId = res.body.id;
+                    done();
+                })
+        });
+
+        it('should return CONFLICT because the reserve already exists', function (done) {
+            chai.request(BASE_URL)
+                .post("/reserves/create")
+                .set('Authorization', studentToken)
+                .send(reserve)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.CONFLICT);
                     done();
                 })
         });
