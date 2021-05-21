@@ -3,12 +3,11 @@ const chaiHttp = require('chai-http');
 const expect = chai.expect;
 const mocha = require('mocha');
 const describe = mocha.describe;
-const bcrypt = require("bcrypt");
+const CryptoJS = require("crypto-js");
 
 const httpCode = require('../../app/resources/httpCodes');
 const testSetup = require("./testsSetup");
 const BASE_URL = require('../../app/resources/constants').BASE_URL;
-const SALT_ROUNDS = require('../../app/resources/constants').SALT_ROUNDS;
 
 let aClass, aClassCode, workout, workoutId, user, userEmail, reserve, reserveId;
 let studentToken, teacherToken, adminToken;
@@ -45,7 +44,7 @@ describe('Testing Reserves', function () {
                 dni: "12345678Y",
                 gender: "man",
                 email: "reservesUserEmail@email",
-                password: bcrypt.hashSync('reservesUserPass', SALT_ROUNDS),
+                password: CryptoJS.AES.encrypt('newUserPass', 'password').toString(),
                 role: "student"
             }
             reserve = {
