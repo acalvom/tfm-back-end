@@ -26,7 +26,7 @@ reservesController.getReservesByUserEmail = (req, res) => {
     let email = req.params.email;
     sql = 'SELECT * FROM reserves WHERE email_user = ?';
     connection.query(sql, [email], function (err, reserves) {
-        console.log(reserves)
+        // console.log(reserves)
         if (!err && reserves.length > 0)
             res.status(httpCode.codes.OK).json(reserves);
         else
