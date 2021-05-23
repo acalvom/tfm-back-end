@@ -124,6 +124,32 @@ describe('Testing Reserves', function () {
         });
     });
 
+    describe('Get Reserves By User Email', function () {
+        it('should return an array of reserves', function (done) {
+            chai.request(BASE_URL)
+                .get("/reserves/" + userEmail)
+                .set('Authorization', studentToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.OK);
+                    expect(res.body).to.be.a('array');
+                    expect(res.body[0].id).not.be.null;
+                    expect(res.body[0].email_user).not.be.null;
+                    expect(res.body[0].code_class).not.be.null;
+                    done();
+                })
+        });
+
+        it('should return NOT FOUND because the reserve does not exist', function (done) {
+            chai.request(BASE_URL)
+                .get("/reserves/notAnEmail")
+                .set('Authorization', studentToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                    done();
+                })
+        });
+    });
+
     after(function () {
         // TEMPORAL
         const connection = require('../../app/database/database');

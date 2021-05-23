@@ -22,6 +22,18 @@ reservesController.createReserve = (req, res) => {
     }
 }
 
+reservesController.getReservesByUserEmail = (req, res) => {
+    let email = req.params.email;
+    sql = 'SELECT * FROM reserves WHERE email_user = ?';
+    connection.query(sql, [email], function (err, reserves) {
+        // console.log(reserves)
+        if (!err && reserves.length > 0)
+            res.status(httpCode.codes.OK).json(reserves);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['Reserves for ' + email + ' not found']);
+    });
+}
+
 reservesController.updatePlaces = (number, code) => {
     sql = 'SELECT current_places FROM classes WHERE code = ?';
     connection.query(sql, [code], function (err, currentPlaces) {
