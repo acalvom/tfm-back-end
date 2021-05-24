@@ -60,19 +60,19 @@ classesController.editClass = (req, res) => {
 classesController.updatePlaces = (req, res) => {
     let code = req.params.code;
     let value = req.body.value;
-    // console.log('value ', value)
-    sql = 'SELECT current_places FROM classes WHERE code = ?';
-    connection.query(sql, [code], function (err, currentPlaces) {
-        if (!err) {
-            let updatePlaces = currentPlaces[0].current_places + value;
-            // console.log('currentPlaces ' , updatePlaces)
+    sql = 'SELECT current_places, max_places FROM classes WHERE code = ?';
+    connection.query(sql, [code], function (err, result) {
+        let currentPlaces = result[0].current_places + value;
+        let maxPlaces = result[0].max_places;
+        // console.log(currentPlaces, maxPlaces, currentPlaces <= maxPlaces)
+        if (!err && currentPlaces <= maxPlaces) {
             sql = 'UPDATE classes SET current_places = ? WHERE code = ?';
-            connection.query(sql, [updatePlaces, code],function (err, result) {
+            connection.query(sql, [currentPlaces, code], function (err, result) {
                 if (!err && result.affectedRows > 0)
                     res.status(httpCode.codes.NOCONTENT).json(['Places updated successfully']);
             });
         } else
-            res.status(httpCode.codes.NOTFOUND).json(['Class ' + code + ' is not found']);
+            res.status(httpCode.codes.FORBIDDEN).json(['Class is full']);
     });
 }
 
