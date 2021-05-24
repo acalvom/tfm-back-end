@@ -18,20 +18,7 @@ reservesController.createReserve = (req, res) => {
             } else
                 res.status(httpCode.codes.CONFLICT).json('This reserve already exists: ' + err.sqlMessage);
         });
-        reservesController.updatePlaces(1, reserve.code_class)
     }
-}
-
-reservesController.getReservesByUserEmail = (req, res) => {
-    let email = req.params.email;
-    sql = 'SELECT * FROM reserves WHERE email_user = ?';
-    connection.query(sql, [email], function (err, reserves) {
-        // console.log(reserves)
-        if (!err && reserves.length > 0)
-            res.status(httpCode.codes.OK).json(reserves);
-        else
-            res.status(httpCode.codes.NOTFOUND).json(['Reserves for ' + email + ' not found']);
-    });
 }
 
 reservesController.deleteReserve = (req, res) => {
@@ -46,16 +33,15 @@ reservesController.deleteReserve = (req, res) => {
     });
 }
 
-reservesController.updatePlaces = (number, code) => {
-    sql = 'SELECT current_places FROM classes WHERE code = ?';
-    connection.query(sql, [code], function (err, currentPlaces) {
-        if (!err) {
-            let updatePlaces = currentPlaces[0].current_places + number;
-            // console.log('currentPlaces ' , updatePlaces)
-            sql = 'UPDATE classes SET current_places = ? WHERE code = ?';
-            connection.query(sql, [updatePlaces, code]);
-        } else
-            console.log(err)
+reservesController.getReservesByUserEmail = (req, res) => {
+    let email = req.params.email;
+    sql = 'SELECT * FROM reserves WHERE email_user = ?';
+    connection.query(sql, [email], function (err, reserves) {
+        // console.log(reserves)
+        if (!err && reserves.length > 0)
+            res.status(httpCode.codes.OK).json(reserves);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['Reserves for ' + email + ' not found']);
     });
 }
 
