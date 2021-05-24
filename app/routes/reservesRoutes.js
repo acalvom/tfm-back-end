@@ -8,5 +8,7 @@ router.use(helmet.hidePoweredBy());
 
 router.post('/reserves/create', middleware.isStudent, reservesController.createReserve);
 router.get('/reserves/:email', middleware.isStudent, reservesController.getReservesByUserEmail);
+router.delete('/reserves/:id', middleware.isStudent, reservesController.deleteReserve);
+
 
 module.exports = router;
