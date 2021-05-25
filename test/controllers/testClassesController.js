@@ -8,14 +8,15 @@ const httpCode = require('../../app/resources/httpCodes');
 const testSetup = require("./testsSetup");
 const BASE_URL = require('../../app/resources/constants').BASE_URL;
 
-let newClass, classCode, workout, workoutId;
-let teacherToken;
+let newClass, classCode, workout, workoutId, currentPlaces, maxPlaces;
+let teacherToken, studentToken;
 
 chai.use(chaiHttp);
 
 describe('Testing Classes', function () {
     before(function () {
         teacherToken = testSetup.getTeacherToken();
+        studentToken = testSetup.getStudentToken();
     });
 
     describe('Get All Classes', function () {
@@ -114,6 +115,7 @@ describe('Testing Classes', function () {
                 init_day_hour: new Date("December 17, 1996 03:24:00"),
                 end_day_hour: new Date("December 19, 1996 03:24:00"),
                 max_places: 30,
+                current_places: 29,
                 location: 'newClassEditedLocation',
                 location_details: 'newClassEditedLocationDetails'
             }
@@ -134,6 +136,17 @@ describe('Testing Classes', function () {
                 .put("/classes/" + classCode)
                 .set('Authorization', teacherToken)
                 .send(newClass)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    done();
+                })
+        });
+        it('should update current places from the class', function (done) {
+            let value = {value: 1};
+            chai.request(BASE_URL)
+                .put("/classes/places/" + classCode)
+                .set('Authorization', studentToken)
+                .send(value)
                 .end(function (err, res) {
                     expect(res).to.have.status(httpCode.codes.NOCONTENT);
                     done();
