@@ -11,7 +11,6 @@ const BASE_URL = require('../../app/resources/constants').BASE_URL;
 
 let aClass, aClassCode, workout, workoutId, user, userEmail, reserve, reserveId;
 let studentToken, teacherToken, adminToken;
-let sql;
 
 chai.use(chaiHttp);
 
@@ -150,14 +149,52 @@ describe('Testing Reserves', function () {
         });
     });
 
-    after(function () {
-        // TEMPORAL
-        const connection = require('../../app/database/database');
-        sql = 'DELETE FROM users WHERE email = ?';
-        connection.query(sql, userEmail);
-        sql = 'DELETE FROM classes WHERE code = ?';
-        connection.query(sql, aClassCode);
-        sql = 'DELETE FROM workouts WHERE id = ?';
-        connection.query(sql, workoutId);
-    })
+    describe('Delete Reserve', function () {
+        it('should delete a reserve', function (done) {
+            chai.request(BASE_URL)
+                .delete("/reserves/" + reserveId)
+                .set('Authorization', studentToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    done();
+                })
+        });
+
+        it('should return NOT FOUND code because the reserve does not exist', function (done) {
+            chai.request(BASE_URL)
+                .delete("/reserves/" + reserveId)
+                .set('Authorization', studentToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                    done();
+                })
+        });
+
+        it('should delete the user associated to the deleted reserve', function (done) {
+            chai.request(BASE_URL)
+                .delete("/users/" + userEmail)
+                .set('Authorization', adminToken)
+                .end(function () {
+                    done();
+                })
+        });
+
+        it('should delete the class associated to the deleted reserve', function (done) {
+            chai.request(BASE_URL)
+                .delete("/classes/" + aClassCode)
+                .set('Authorization', teacherToken)
+                .end(function () {
+                    done();
+                })
+        });
+
+        it('should delete the workout associated to the deleted reserve', function (done) {
+            chai.request(BASE_URL)
+                .delete("/workouts/" + workoutId)
+                .set('Authorization', teacherToken)
+                .end(function () {
+                    done();
+                })
+        });
+    });
 })
