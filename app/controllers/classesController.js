@@ -64,7 +64,7 @@ classesController.updatePlaces = (req, res) => {
     connection.query(sql, [code], function (err, result) {
         let currentPlaces = result[0].current_places + value;
         let maxPlaces = result[0].max_places;
-        console.log(currentPlaces, maxPlaces, currentPlaces <= maxPlaces)
+        // console.log(currentPlaces, maxPlaces, currentPlaces <= maxPlaces)
         if (!err && currentPlaces <= maxPlaces) {
             sql = 'UPDATE classes SET current_places = ? WHERE code = ?';
             connection.query(sql, [currentPlaces, code], function (err, result) {
