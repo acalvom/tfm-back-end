@@ -62,7 +62,6 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-
         it('should create a new class to create a new reserve', function (done) {
             aClass.id_workout = String(workoutId);
             chai.request(BASE_URL)
@@ -74,7 +73,6 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-
         it('should create a new user to create a new reserve', function (done) {
             chai.request(BASE_URL)
                 .post("/users/register")
@@ -85,7 +83,6 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-
         it('should CREATE a reserve', function (done) {
             chai.request(BASE_URL)
                 .post("/reserves/create")
@@ -98,7 +95,6 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-
         it('should return CONFLICT because the reserve already exists', function (done) {
             chai.request(BASE_URL)
                 .post("/reserves/create")
@@ -109,7 +105,6 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-
         it('should return NO CONTENT because the body is empty', function (done) {
             reserve = {}
             chai.request(BASE_URL)
@@ -137,11 +132,33 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-
         it('should return NOT FOUND because the reserve does not exist', function (done) {
             chai.request(BASE_URL)
                 .get("/reserves/notAnEmail")
                 .set('Authorization', studentToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                    done();
+                })
+        });
+    });
+
+    describe('Get Reserves By Class Code', function () {
+        it('should return an array of reserves', function (done) {
+            chai.request(BASE_URL)
+                .get("/reserves/" + aClassCode + "/users")
+                .set('Authorization', adminToken)
+                .end(function (err, res) {
+                    expect(res.body).to.be.a('array');
+                    expect(res.body[0].id).not.be.null;
+                    expect(res.body[0].email_user).not.be.null;
+                    done();
+                })
+        });
+        it('should return NOT FOUND because the reserve does not exist', function (done) {
+            chai.request(BASE_URL)
+                .get("/reserves/notACode/users")
+                .set('Authorization', teacherToken)
                 .end(function (err, res) {
                     expect(res).to.have.status(httpCode.codes.NOTFOUND);
                     done();
@@ -159,7 +176,6 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-
         it('should return NOT FOUND code because the reserve does not exist', function (done) {
             chai.request(BASE_URL)
                 .delete("/reserves/" + reserveId)
@@ -169,7 +185,6 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-
         it('should delete the user associated to the deleted reserve', function (done) {
             chai.request(BASE_URL)
                 .delete("/users/" + userEmail)
@@ -178,7 +193,6 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-
         it('should delete the class associated to the deleted reserve', function (done) {
             chai.request(BASE_URL)
                 .delete("/classes/" + aClassCode)
@@ -187,7 +201,6 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-
         it('should delete the workout associated to the deleted reserve', function (done) {
             chai.request(BASE_URL)
                 .delete("/workouts/" + workoutId)
