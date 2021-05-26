@@ -45,5 +45,17 @@ reservesController.getReservesByUserEmail = (req, res) => {
     });
 }
 
+reservesController.getReservesByCodeClass = (req, res) => {
+    let code = req.params.code;
+    sql = 'SELECT * FROM reserves WHERE code_class = ?';
+    connection.query(sql, [code], function (err, reserves) {
+        // console.log(reserves)
+        if (!err && reserves.length > 0)
+            res.status(httpCode.codes.OK).json(reserves);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['Reserves for ' + code + ' not found']);
+    });
+}
+
 module.exports = reservesController;
 
