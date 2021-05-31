@@ -22,7 +22,7 @@ function tokenProvided(req, res) {
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')
         return req.headers.authorization.split(' ')[1];
     else
-        res.status(httpCode.codes.NOCONTENT).json('No token provided');
+        res.status(httpCode.codes.BADREQUEST).json('No token provided');
 }
 
 middleware.isAuthenticated = (req, res, next) => {

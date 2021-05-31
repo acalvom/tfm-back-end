@@ -29,11 +29,11 @@ describe('Testing Users', function () {
     });
     describe('Admin Role', function () {
         describe('Get Users', function () {
-            it('should return no content because there is no token provided', function (done) {
+            it('should return BAD REQUEST because there is no token provided', function (done) {
                 chai.request(BASE_URL)
                     .get("/users")
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                        expect(res).to.have.status(httpCode.codes.BADREQUEST);
                         done();
                     })
             });
@@ -264,11 +264,11 @@ describe('Testing Users', function () {
 
     describe('Teacher Role', function () {
         describe('Get Students', function () {
-            it('should return no content because there is no token provided', function (done) {
+            it('should return BAD REQUEST because there is no token provided', function (done) {
                 chai.request(BASE_URL)
                     .get("/users/students")
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                        expect(res).to.have.status(httpCode.codes.BADREQUEST);
                         done();
                     })
             });
@@ -304,11 +304,11 @@ describe('Testing Users', function () {
     });
 
     describe('Student Role', function () {
-        it('should return no content because there is no token provided', function (done) {
+        it('should return BAD REQUEST because there is no token provided', function (done) {
             chai.request(BASE_URL)
                 .post("/reserves/create")
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
                     done();
                 })
         });
@@ -344,11 +344,11 @@ describe('Testing Users', function () {
                         done();
                     })
             });
-            it('should return no content because there is no token provided', function (done) {
+            it('should return BAD REQUEST because there is no token provided', function (done) {
                 chai.request(BASE_URL)
                     .get("/users/" + studentEmail)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                        expect(res).to.have.status(httpCode.codes.BADREQUEST);
                         done();
                     })
             });
@@ -379,5 +379,26 @@ describe('Testing Users', function () {
                     })
             });
         });
-    })
+    });
+
+    describe('Admin or Teacher role', function () {
+        it('should return BAD REQUEST because there is no token provided', function (done) {
+            chai.request(BASE_URL)
+                .post("/news/create")
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
+                    done();
+                })
+        });
+
+        it('should return an FORBIDDEN code because role is student', function (done) {
+            chai.request(BASE_URL)
+                .post("/news/create")
+                .set('Authorization', studentToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                    done();
+                })
+        });
+    });
 });
