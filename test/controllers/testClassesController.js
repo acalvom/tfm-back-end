@@ -75,12 +75,12 @@ describe('Testing Classes', function () {
                 })
         });
 
-        it('should return FORBIDDEN code because workout is assign to a class', function (done) {
+        it('should return CONFLICT code because workout is assign to a class', function (done) {
             chai.request(BASE_URL)
                 .delete("/workouts/" + workoutId)
                 .set('Authorization', teacherToken)
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                    expect(res).to.have.status(httpCode.codes.CONFLICT);
                     done();
                 })
         });

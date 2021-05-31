@@ -7,7 +7,7 @@ let sql;
 workoutsController.createWorkout = (req, res) => {
     let workout = req.body;
     if (Object.keys(workout).length === 0)
-        res.status(httpCode.codes.NOCONTENT).json('No workout sent');
+        res.status(httpCode.codes.BADREQUEST).json('No workout sent');
     else {
         sql = 'INSERT INTO workouts SET ?';
         connection.query(sql, [workout], function (err, resultDB) {
@@ -38,7 +38,7 @@ workoutsController.deleteWorkout = (req, res) => {
             res.status(httpCode.codes.NOCONTENT).json(['Workout ' + id + ' deleted successfully']);
         else if (err) {
             if (err.code === 'ER_ROW_IS_REFERENCED_2')
-                res.status(httpCode.codes.FORBIDDEN).json(['Workout ' + id + ' cannot be delete because it is assign to a class']);
+                res.status(httpCode.codes.CONFLICT).json(['Workout ' + id + ' cannot be delete because it is assign to a class']);
         } else
             res.status(httpCode.codes.NOTFOUND).json(['Workout ' + id + ' is not found']);
     });
