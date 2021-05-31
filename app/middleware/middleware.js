@@ -3,7 +3,6 @@ const fs = require('fs');
 
 const httpCode = require('../resources/httpCodes');
 const PARAMETERS = require('../resources/constants');
-
 const middleware = {}
 
 function readKey() {
@@ -23,7 +22,7 @@ function tokenProvided(req, res) {
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')
         return req.headers.authorization.split(' ')[1];
     else
-        res.status(httpCode.codes.NOCONTENT).json('No token provided');
+        res.status(httpCode.codes.BADREQUEST).json('No token provided');
 }
 
 middleware.isAuthenticated = (req, res, next) => {
@@ -47,7 +46,7 @@ middleware.isAdmin = (req, res, next) => {
                 req.decoded = decoded;
                 next();
             } else
-                res.status(httpCode.codes.UNAUTHORIZED).json('You are not an admin');
+                res.status(httpCode.codes.FORBIDDEN).json('You are not an admin');
         });
     }
 }
@@ -60,7 +59,7 @@ middleware.isTeacher = (req, res, next) => {
                 req.decoded = decoded;
                 next();
             } else
-                res.status(httpCode.codes.UNAUTHORIZED).json('You are not a teacher');
+                res.status(httpCode.codes.FORBIDDEN).json('You are not a teacher');
         });
     }
 }
@@ -73,7 +72,20 @@ middleware.isStudent = (req, res, next) => {
                 req.decoded = decoded;
                 next();
             } else
-                res.status(httpCode.codes.UNAUTHORIZED).json('You are not a student');
+                res.status(httpCode.codes.FORBIDDEN).json('You are not a student');
+        });
+    }
+}
+
+middleware.isAdminOrTeacher = (req, res, next) => {
+    let token = tokenProvided(req, res);
+    if (token) {
+        jwt.verify(token, readKey(), (err, decoded) => {
+            if (!err && (decoded.role === 'teacher' || decoded.role === 'admin')) {
+                req.decoded = decoded;
+                next();
+            } else
+                res.status(httpCode.codes.FORBIDDEN).json('You are not an admin or teacher');
         });
     }
 }

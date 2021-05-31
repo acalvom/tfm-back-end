@@ -58,7 +58,7 @@ describe('Testing Workouts', function () {
                 })
         });
 
-        it('should return INTERNAL SERVER ERROR because the body is empty', function (done) {
+        it('should return INTERNAL SERVER ERROR', function (done) {
             chai.request(BASE_URL)
                 .post("/workouts/create")
                 .set('Authorization', teacherToken)
@@ -69,14 +69,14 @@ describe('Testing Workouts', function () {
                 })
         });
 
-        it('should return NO CONTENT because the body is empty', function (done) {
+        it('should return BADREQUEST because the body is empty', function (done) {
             workout = {}
             chai.request(BASE_URL)
                 .post("/workouts/create")
                 .set('Authorization', teacherToken)
                 .send(workout)
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
                     done();
                 })
         });
