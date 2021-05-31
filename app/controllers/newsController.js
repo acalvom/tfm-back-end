@@ -21,4 +21,15 @@ newsController.createNews = (req, res) => {
     }
 }
 
+newsController.getLastNews = (req, res) => {
+    sql = 'SELECT * FROM news ORDER BY id DESC LIMIT 4';
+    connection.query(sql, function (err, lastNews) {
+        if (!err && lastNews.length > 0) {
+            console.log(lastNews)
+            res.status(httpCode.codes.OK).json(lastNews);
+        } else
+            res.status(httpCode.codes.NOTFOUND).json('News not found');
+    });
+}
+
 module.exports = newsController;
