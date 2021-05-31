@@ -3,7 +3,6 @@ const fs = require('fs');
 
 const httpCode = require('../resources/httpCodes');
 const PARAMETERS = require('../resources/constants');
-
 const middleware = {}
 
 function readKey() {
@@ -74,6 +73,19 @@ middleware.isStudent = (req, res, next) => {
                 next();
             } else
                 res.status(httpCode.codes.UNAUTHORIZED).json('You are not a student');
+        });
+    }
+}
+
+middleware.isAdminOrTeacher = (req, res, next) => {
+    let token = tokenProvided(req, res);
+    if (token) {
+        jwt.verify(token, readKey(), (err, decoded) => {
+            if (!err && (decoded.role === 'teacher' || decoded.role === 'admin')) {
+                req.decoded = decoded;
+                next();
+            } else
+                res.status(httpCode.codes.FORBIDDEN).json('You are not an admin or teacher');
         });
     }
 }
