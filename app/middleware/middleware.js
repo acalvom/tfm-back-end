@@ -46,7 +46,7 @@ middleware.isAdmin = (req, res, next) => {
                 req.decoded = decoded;
                 next();
             } else
-                res.status(httpCode.codes.UNAUTHORIZED).json('You are not an admin');
+                res.status(httpCode.codes.FORBIDDEN).json('You are not an admin');
         });
     }
 }
@@ -59,7 +59,7 @@ middleware.isTeacher = (req, res, next) => {
                 req.decoded = decoded;
                 next();
             } else
-                res.status(httpCode.codes.UNAUTHORIZED).json('You are not a teacher');
+                res.status(httpCode.codes.FORBIDDEN).json('You are not a teacher');
         });
     }
 }
@@ -72,7 +72,7 @@ middleware.isStudent = (req, res, next) => {
                 req.decoded = decoded;
                 next();
             } else
-                res.status(httpCode.codes.UNAUTHORIZED).json('You are not a student');
+                res.status(httpCode.codes.FORBIDDEN).json('You are not a student');
         });
     }
 }

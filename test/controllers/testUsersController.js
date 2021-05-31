@@ -47,21 +47,21 @@ describe('Testing Users', function () {
                         done();
                     })
             });
-            it('should return an unauthorized code because role is teacher', function (done) {
+            it('should return an FORBIDDEN because role is teacher', function (done) {
                 chai.request(BASE_URL)
                     .get("/users")
                     .set('Authorization', teacherToken)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                         done();
                     })
             });
-            it('should return an unauthorized code because role is student', function (done) {
+            it('should return an FORBIDDEN because role is student', function (done) {
                 chai.request(BASE_URL)
                     .get("/users")
                     .set('Authorization', studentToken)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                         done();
                     })
             });
@@ -87,23 +87,23 @@ describe('Testing Users', function () {
                     email: "editedEmail@email"
                 }
             });
-            it('should return an unauthorized code because role is teacher', function (done) {
+            it('should return an FORBIDDEN because role is teacher', function (done) {
                 chai.request(BASE_URL)
                     .put("/users/" + data.email)
                     .set('Authorization', teacherToken)
                     .send(editedUser)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                         done();
                     })
             });
-            it('should return an unauthorized code because role is student', function (done) {
+            it('should return an FORBIDDEN because role is student', function (done) {
                 chai.request(BASE_URL)
                     .put("/users/" + data.email)
                     .set('Authorization', studentToken)
                     .send(editedUser)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                         done();
                     })
             });
@@ -223,21 +223,21 @@ describe('Testing Users', function () {
             before(function () {
                 data = editedUser;
             });
-            it('should return an unauthorized code because role is teacher', function (done) {
+            it('should return an FORBIDDEN because role is teacher', function (done) {
                 chai.request(BASE_URL)
                     .delete("/users/" + data.email)
                     .set('Authorization', teacherToken)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                         done();
                     })
             });
-            it('should return an unauthorized code because role is student', function (done) {
+            it('should return an FORBIDDEN because role is student', function (done) {
                 chai.request(BASE_URL)
                     .delete("/users/" + data.email)
                     .set('Authorization', studentToken)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                         done();
                     })
             });
@@ -282,21 +282,21 @@ describe('Testing Users', function () {
                         done();
                     })
             });
-            it('should return an unauthorized code because role is admin', function (done) {
+            it('should return an FORBIDDEN because role is admin', function (done) {
                 chai.request(BASE_URL)
                     .get("/users/students")
                     .set('Authorization', adminToken)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                         done();
                     })
             });
-            it('should return an unauthorized code because role is student', function (done) {
+            it('should return an FORBIDDEN because role is student', function (done) {
                 chai.request(BASE_URL)
                     .get("/users/students")
                     .set('Authorization', studentToken)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                         done();
                     })
             });
@@ -313,21 +313,21 @@ describe('Testing Users', function () {
                 })
         });
 
-        it('should return an unauthorized code because role is admin', function (done) {
+        it('should return an FORBIDDEN because role is admin', function (done) {
             chai.request(BASE_URL)
                 .post("/reserves/create")
                 .set('Authorization', adminToken)
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                     done();
                 })
         });
-        it('should return an unauthorized code because role is teacher', function (done) {
+        it('should return an FORBIDDEN because role is teacher', function (done) {
             chai.request(BASE_URL)
                 .post("/reserves/create")
                 .set('Authorization', teacherToken)
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                     done();
                 })
         });

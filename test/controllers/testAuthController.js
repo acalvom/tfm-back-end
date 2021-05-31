@@ -126,13 +126,13 @@ describe('Testing AuthController', function () {
                 })
         });
 
-        it('should return unauthorized when register a new user', function (done) {
+        it('should return FORBIDDEN when register a new user', function (done) {
             chai.request(BASE_URL)
                 .post("/users/register")
                 .set('Authorization', teacherToken)
                 .send(data)
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
                     done();
                 })
         });
