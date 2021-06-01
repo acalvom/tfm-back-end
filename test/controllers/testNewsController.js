@@ -20,6 +20,21 @@ describe('Testing News', function () {
         studentToken = testSetup.getStudentToken();
     });
 
+    describe('Get Last News', function () {
+        it('should return an array of 3 news', function (done) {
+            chai.request(BASE_URL)
+                .get("/news")
+                .set('Authorization', studentToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.OK);
+                    expect(res.body).to.be.a('array');
+                    expect(res.body).to.have.lengthOf(3);
+                    done();
+                })
+        });
+    });
+
+
     describe('Create News', function () {
         before(function () {
             news = {
@@ -71,7 +86,7 @@ describe('Testing News', function () {
         // TEMPORAL
         const connection = require('../../app/database/database');
         const sql = 'DELETE FROM news WHERE code = ?';
-        console.log(newsCode)
+        // console.log(newsCode)
         connection.query(sql, newsCode);
     })
 })

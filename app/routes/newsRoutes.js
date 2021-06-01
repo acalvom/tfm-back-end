@@ -7,5 +7,6 @@ const router = express.Router();
 router.use(helmet.hidePoweredBy());
 
 router.post('/news/create', middleware.isAdminOrTeacher, newsController.createNews);
+router.get('/news', middleware.isAuthenticated, newsController.getLastNews);
 
 module.exports = router;

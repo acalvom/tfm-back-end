@@ -7,7 +7,7 @@ let sql;
 reservesController.createReserve = (req, res) => {
     let reserve = req.body;
     if (Object.keys(reserve).length === 0)
-        res.status(httpCode.codes.NOCONTENT).json('No reserve sent');
+        res.status(httpCode.codes.BADREQUEST).json('No reserve sent');
     else {
         sql = 'INSERT INTO reserves SET ?';
         // console.log(reserve)

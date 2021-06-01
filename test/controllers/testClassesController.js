@@ -96,14 +96,14 @@ describe('Testing Classes', function () {
                 })
         });
 
-        it('should return NO CONTENT because the body is empty', function (done) {
+        it('should return BAD REQUEST because the body is empty', function (done) {
             newClass = {}
             chai.request(BASE_URL)
                 .post("/classes/create")
                 .set('Authorization', teacherToken)
                 .send(newClass)
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
                     done();
                 })
         });
@@ -152,14 +152,14 @@ describe('Testing Classes', function () {
                     done();
                 })
         });
-        it('should return FORBIDDEN because there are no available places for the class', function (done) {
+        it('should return CONFLICT because there are no available places for the class', function (done) {
             let value = {value: 1};
             chai.request(BASE_URL)
                 .put("/classes/places/" + classCode)
                 .set('Authorization', studentToken)
                 .send(value)
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                    expect(res).to.have.status(httpCode.codes.CONFLICT);
                     done();
                 })
         });
