@@ -105,14 +105,14 @@ describe('Testing Reserves', function () {
                     done();
                 })
         });
-        it('should return NO CONTENT because the body is empty', function (done) {
+        it('should return BAD REQUEST because the body is empty', function (done) {
             reserve = {}
             chai.request(BASE_URL)
                 .post("/reserves/create")
                 .set('Authorization', studentToken)
                 .send(reserve)
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
                     done();
                 })
         });
