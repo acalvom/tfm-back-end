@@ -7,7 +7,7 @@ let sql;
 classesController.createClass = (req, res) => {
     let newClass = req.body;
     if (Object.keys(newClass).length === 0)
-        res.status(httpCode.codes.NOCONTENT).json('No class sent');
+        res.status(httpCode.codes.BADREQUEST).json('No class sent');
     else {
         sql = 'INSERT INTO classes SET ?';
         //console.log(newClass)
@@ -72,7 +72,7 @@ classesController.updatePlaces = (req, res) => {
                     res.status(httpCode.codes.NOCONTENT).json(['Places updated successfully']);
             });
         } else
-            res.status(httpCode.codes.FORBIDDEN).json(['Class is full']);
+            res.status(httpCode.codes.CONFLICT).json(['Class is full']);
     });
 }
 
