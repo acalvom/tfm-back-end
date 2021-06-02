@@ -82,11 +82,26 @@ describe('Testing News', function () {
         });
     });
 
-    after(function () {
-        // TEMPORAL
-        const connection = require('../../app/database/database');
-        const sql = 'DELETE FROM news WHERE code = ?';
-        // console.log(newsCode)
-        connection.query(sql, newsCode);
-    })
+    describe('Delete News', function () {
+        it('should delete news', function (done) {
+            chai.request(BASE_URL)
+                .delete("/news/" + newsCode)
+                .set('Authorization', adminToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    done();
+                })
+        });
+
+        it('should return NOT FOUND code because workout does not exist', function (done) {
+            chai.request(BASE_URL)
+                .delete("/news/" + newsCode)
+                .set('Authorization', teacherToken)
+                .end(function (err, res) {
+                    expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                    done();
+                })
+        });
+    });
+
 })
