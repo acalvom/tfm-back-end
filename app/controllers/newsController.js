@@ -32,4 +32,16 @@ newsController.getLastNews = (req, res) => {
     });
 }
 
+newsController.deleteNews = (req, res) => {
+    let code = req.params.code;
+    sql = 'DELETE FROM news WHERE code = ?';
+    connection.query(sql, [code], function (err, result) {
+        // console.log(code)
+        if (!err && result.affectedRows > 0)
+            res.status(httpCode.codes.NOCONTENT).json(['News ' + code + ' deleted successfully']);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['News ' + code + ' is not found']);
+    });
+}
+
 module.exports = newsController;
