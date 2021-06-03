@@ -6,26 +6,21 @@ const describe = mocha.describe;
 const bcrypt = require("bcrypt");
 
 const httpCode = require('../../app/resources/httpCodes');
-const middleware = require('../../app/middleware/middleware');
 const connection = require('../../app/database/database');
 const SALT_ROUNDS = require('../../app/resources/constants').SALT_ROUNDS;
 const BASE_URL = require('../../app/resources/constants').BASE_URL;
+const testSetup = require("./testsSetup");
 
 let adminToken, teacherToken, studentToken;
-let superuserEmail, teacherEmail, studentEmail
 let data, editedUser, passwordsInfo;
 
 chai.use(chaiHttp);
 
 describe('Testing Users', function () {
     before(function () {
-        superuserEmail = 'superuser@academy.com';
-        teacherEmail = 'teacher@academy.com';
-        studentEmail = 'student@academy.com';
-
-        adminToken = 'Bearer ' + middleware.generateToken(superuserEmail, 'admin');
-        teacherToken = 'Bearer ' + middleware.generateToken(teacherEmail, 'teacher');
-        studentToken = 'Bearer ' + middleware.generateToken(studentEmail, 'student');
+        adminToken = testSetup.getAdminToken();
+        teacherToken = testSetup.getTeacherToken();
+        studentToken = testSetup.getStudentToken();
     });
     describe('Admin Role', function () {
         describe('Get Users', function () {
