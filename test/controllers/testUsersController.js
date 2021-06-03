@@ -128,6 +128,31 @@ describe('Testing Users', function () {
                     })
             });
         });
+        describe('Set Penalties to Student', function () {
+            it('should update penalties number from the student', function (done) {
+                let penalties = {penalties: 1};
+                chai.request(BASE_URL)
+                    .put("/users/penalties/" + editedUser.email)
+                    .set('Authorization', teacherToken)
+                    .send(penalties)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                        done();
+                    })
+            });
+            it('should return NOT FOUND because the student does not exist', function (done) {
+                let penalties = {penalties: 1};
+                chai.request(BASE_URL)
+                    .put("/users/penalties/notAnEmail")
+                    .set('Authorization', teacherToken)
+                    .send(penalties)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.NOTFOUND);
+                        done();
+                    })
+            });
+
+        })
         describe('Add Phone Number', function () {
             it('should return not found because the user does not exists', function (done) {
                 chai.request(BASE_URL)
@@ -301,6 +326,7 @@ describe('Testing Users', function () {
                     })
             });
         });
+
     });
 
     describe('Student Role', function () {
