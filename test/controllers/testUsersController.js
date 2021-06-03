@@ -9,7 +9,7 @@ const httpCode = require('../../app/resources/httpCodes');
 const connection = require('../../app/database/database');
 const SALT_ROUNDS = require('../../app/resources/constants').SALT_ROUNDS;
 const BASE_URL = require('../../app/resources/constants').BASE_URL;
-const testSetup = require("./testsSetup");
+const testSetup = require("../testsSetup");
 
 let adminToken, teacherToken, studentToken;
 let superuserEmail, teacherEmail, studentEmail;

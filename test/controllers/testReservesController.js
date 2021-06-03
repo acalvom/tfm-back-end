@@ -6,7 +6,7 @@ const describe = mocha.describe;
 const CryptoJS = require("crypto-js");
 
 const httpCode = require('../../app/resources/httpCodes');
-const testSetup = require("./testsSetup");
+const testSetup = require("../testsSetup");
 const BASE_URL = require('../../app/resources/constants').BASE_URL;
 
 let aClass, aClassCode, workout, workoutId, user, userEmail, reserve, reserveId;

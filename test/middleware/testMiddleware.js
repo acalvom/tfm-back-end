@@ -4,7 +4,7 @@ const expect = chai.expect;
 const mocha = require('mocha');
 const describe = mocha.describe;
 
-const testSetup = require("./testsSetup");
+const testSetup = require("../testsSetup");
 const middleware = require('../../app/middleware/middleware');
 const httpCode = require('../../app/resources/httpCodes');
 const BASE_URL = require('../../app/resources/constants').BASE_URL;
