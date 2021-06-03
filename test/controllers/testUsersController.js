@@ -12,13 +12,18 @@ const BASE_URL = require('../../app/resources/constants').BASE_URL;
 const testSetup = require("./testsSetup");
 
 let adminToken, teacherToken, studentToken;
+let superuserEmail, teacherEmail, studentEmail;
 let data, editedUser, passwordsInfo;
 
 chai.use(chaiHttp);
 
 describe('Testing Users', function () {
     before(function () {
-        adminToken = testSetup.getAdminToken();
+        superuserEmail = 'superuser@academy.com';
+        teacherEmail = 'teacher@academy.com';
+        studentEmail = 'student@academy.com';
+
+        adminToken = testSetup.getAdminToken()
         teacherToken = testSetup.getTeacherToken();
         studentToken = testSetup.getStudentToken();
     });
