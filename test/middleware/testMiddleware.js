@@ -33,127 +33,143 @@ describe('Testing Middleware', function () {
             studentToken = testSetup.getStudentToken();
         });
 
-        it('NO TOKEN--should return BAD REQUEST because there is no token provided', function (done) {
-            chai.request(BASE_URL)
-                .get("/users")
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
-                    done();
-                })
-        });
 
-        it('AUTH--should return an UNAUTHORIZED code because of a bad token', function (done) {
-            chai.request(BASE_URL)
-                .get("/classes")
-                .set('Authorization', "Bearer badToken")
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
-                    done();
-                })
-        });
+        describe('Authentication role access', function () {
+            it('should return an UNAUTHORIZED code because of a bad token', function (done) {
+                chai.request(BASE_URL)
+                    .get("/classes")
+                    .set('Authorization', "Bearer badToken")
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.UNAUTHORIZED);
+                        done();
+                    })
+            });
 
-        it('AUTH--should return an UNAUTHORIZED code because of a bad token', function (done) {
-            chai.request(BASE_URL)
-                .get("/classes")
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
-                    done();
-                })
-        });
+            it('should return an UNAUTHORIZED code because of a bad token', function (done) {
+                chai.request(BASE_URL)
+                    .get("/classes")
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.BADREQUEST);
+                        done();
+                    })
+            });
+        })
 
-        it('ADMIN--should return an FORBIDDEN because role is teacher', function (done) {
-            chai.request(BASE_URL)
-                .get("/users")
-                .set('Authorization', teacherToken)
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
-                    done();
-                })
-        });
-        it('ADMIN--should return an FORBIDDEN because role is student', function (done) {
-            chai.request(BASE_URL)
-                .get("/users")
-                .set('Authorization', studentToken)
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
-                    done();
-                })
-        });
+        describe('Admin role access', function () {
+            it('should return BAD REQUEST because there is no token provided', function (done) {
+                chai.request(BASE_URL)
+                    .get("/users")
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.BADREQUEST);
+                        done();
+                    })
+            });
 
-        it('TEACHER--should return BAD REQUEST because there is no token provided', function (done) {
-            chai.request(BASE_URL)
-                .get("/users/students")
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
-                    done();
-                })
-        });
+            it('should return an FORBIDDEN because role is teacher', function (done) {
+                chai.request(BASE_URL)
+                    .get("/users")
+                    .set('Authorization', teacherToken)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                        done();
+                    })
+            });
+            it('should return an FORBIDDEN because role is student', function (done) {
+                chai.request(BASE_URL)
+                    .get("/users")
+                    .set('Authorization', studentToken)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                        done();
+                    })
+            });
+        })
 
-        it('TEACHER--should return an FORBIDDEN because role is admin', function (done) {
-            chai.request(BASE_URL)
-                .get("/users/students")
-                .set('Authorization', adminToken)
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
-                    done();
-                })
-        });
-        it('TEACHER--should return an FORBIDDEN because role is student', function (done) {
-            chai.request(BASE_URL)
-                .get("/users/students")
-                .set('Authorization', studentToken)
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
-                    done();
-                })
-        });
+        describe('Teacher role access', function () {
+            it('should return BAD REQUEST because there is no token provided', function (done) {
+                chai.request(BASE_URL)
+                    .get("/users/students")
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.BADREQUEST);
+                        done();
+                    })
+            });
 
-        it('STUDENT--should return BAD REQUEST because there is no token provided', function (done) {
-            chai.request(BASE_URL)
-                .post("/reserves/create")
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
-                    done();
-                })
-        });
+            it('should return an FORBIDDEN because role is admin', function (done) {
+                chai.request(BASE_URL)
+                    .get("/users/students")
+                    .set('Authorization', adminToken)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                        done();
+                    })
+            });
+            it('should return an FORBIDDEN because role is student', function (done) {
+                chai.request(BASE_URL)
+                    .get("/users/students")
+                    .set('Authorization', studentToken)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                        done();
+                    })
+            });
 
-        it('STUDENT--should return an FORBIDDEN because role is admin', function (done) {
-            chai.request(BASE_URL)
-                .post("/reserves/create")
-                .set('Authorization', adminToken)
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
-                    done();
-                })
-        });
-        it('STUDENT--should return an FORBIDDEN because role is teacher', function (done) {
-            chai.request(BASE_URL)
-                .post("/reserves/create")
-                .set('Authorization', teacherToken)
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
-                    done();
-                })
-        });
+        })
 
-        it('ADMINTEACHER--should return BAD REQUEST because there is no token provided', function (done) {
-            chai.request(BASE_URL)
-                .post("/news/create")
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
-                    done();
-                })
-        });
+        describe('Student role access', function () {
+            it('should return BAD REQUEST because there is no token provided', function (done) {
+                chai.request(BASE_URL)
+                    .post("/reserves/create")
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.BADREQUEST);
+                        done();
+                    })
+            });
 
-        it('ADMINTEACHER--should return an FORBIDDEN code because role is student', function (done) {
-            chai.request(BASE_URL)
-                .post("/news/create")
-                .set('Authorization', studentToken)
-                .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.FORBIDDEN);
-                    done();
-                })
-        });
+            it('should return an FORBIDDEN because role is admin', function (done) {
+                chai.request(BASE_URL)
+                    .post("/reserves/create")
+                    .set('Authorization', adminToken)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                        done();
+                    })
+            });
+            it('should return an FORBIDDEN because role is teacher', function (done) {
+                chai.request(BASE_URL)
+                    .post("/reserves/create")
+                    .set('Authorization', teacherToken)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                        done();
+                    })
+            });
+
+
+        })
+
+        describe('Admin or Teacher role access', function () {
+            it('should return BAD REQUEST because there is no token provided', function (done) {
+                chai.request(BASE_URL)
+                    .post("/news/create")
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.BADREQUEST);
+                        done();
+                    })
+            });
+
+            it('should return an FORBIDDEN code because role is student', function (done) {
+                chai.request(BASE_URL)
+                    .post("/news/create")
+                    .set('Authorization', studentToken)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(httpCode.codes.FORBIDDEN);
+                        done();
+                    })
+            });
+
+        })
+
 
     });
 });
