@@ -61,6 +61,18 @@ usersController.editUser = (req, res) => {
     });
 }
 
+usersController.setPenalties = (req, res) => {
+    let email = req.params.email;
+    let penalties = req.body.penalties;
+    sql = 'UPDATE users SET penalties = ? WHERE email = ?';
+    connection.query(sql, [penalties, email], function (err, result) {
+        if (!err && result.affectedRows > 0)
+            res.status(httpCode.codes.NOCONTENT).json(['Penalties updated successfully']);
+        else
+            res.status(httpCode.codes.NOTFOUND).json(['User ' + email + ' is not found']);
+    });
+}
+
 
 usersController.changePassword = (req, res) => {
     let email = req.body['userEmail']
