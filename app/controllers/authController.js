@@ -13,7 +13,7 @@ let newUser;
 authController.register = (req, res) => {
     let user = req.body;
     if (Object.keys(user).length === 0)
-        res.status(httpCode.codes.NOCONTENT).json('Body is empty');
+        res.status(httpCode.codes.BADREQUEST).json('Body is empty');
     else {
         newUser = encryptDBPassword(user);
         sql = 'INSERT INTO users SET ?';
@@ -38,12 +38,12 @@ authController.login = (req, res) => {
                     token = middleware.generateToken(email, role);
                     setToken(role, res);
                 } else
-                    res.status(httpCode.codes.BADREQUEST).json('Wrong password');
+                    res.status(httpCode.codes.UNAUTHORIZED).json('Wrong password');
             } else
                 res.status(httpCode.codes.NOTFOUND).json('User not found');
         });
     } else
-        res.status(httpCode.codes.NOCONTENT).json('Email or password not set');
+        res.status(httpCode.codes.BADREQUEST).json('Email or password not set');
 }
 
 function setToken(role, res) {
