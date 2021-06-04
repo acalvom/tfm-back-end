@@ -58,7 +58,8 @@ describe('Testing Users', function () {
                     surname: "editedSurname",
                     dni: "",
                     gender: "man",
-                    email: "editedEmail@email"
+                    email: "editedEmail@email",
+                    penalties: 2
                 }
             });
             it('should return an not found code because user not exists', function (done) {
