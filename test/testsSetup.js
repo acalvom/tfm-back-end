@@ -1,4 +1,4 @@
-const middleware = require("../../app/middleware/middleware");
+const middleware = require("../app/middleware/middleware");
 
 superuserEmail = 'superuser@academy.com';
 teacherEmail = 'teacher@academy.com';
