@@ -56,7 +56,7 @@ describe('Testing AuthController', function () {
                 })
         });
 
-        it('should return a user not found in login', function (done) {
+        it('should return a NOTFOUND in login', function (done) {
             chai.request(BASE_URL)
                 .post("/users/login")
                 .send({email: 'nouser@academy.com', password: data.password})
@@ -66,22 +66,22 @@ describe('Testing AuthController', function () {
                 })
         });
 
-        it('should return a wrong password in login', function (done) {
+        it('should return UNAUTHORIZED because of a wrong password in login', function (done) {
             chai.request(BASE_URL)
                 .post("/users/login")
                 .send({email: data.email, password: CryptoJS.AES.encrypt('aa', 'password').toString()})
                 .end(function (err, res) {
-                    expect(res).to.have.status((httpCode.codes.BADREQUEST));
+                    expect(res).to.have.status((httpCode.codes.UNAUTHORIZED));
                     done();
                 })
         });
 
-        it('should return no email/password provided in login', function (done) {
+        it('should return BAD REQUEST because there is no email/password provided in login', function (done) {
             chai.request(BASE_URL)
                 .post("/users/login")
                 .send({email: '', password: ''})
                 .end(function (err, res) {
-                    expect(res).to.have.status((httpCode.codes.NOCONTENT));
+                    expect(res).to.have.status((httpCode.codes.BADREQUEST));
                     done();
                 })
         });
@@ -115,7 +115,7 @@ describe('Testing AuthController', function () {
                 })
         });
 
-        it('should return error when register an exiting user', function (done) {
+        it('should return CONFLICT because the user already exists', function (done) {
             chai.request(BASE_URL)
                 .post("/users/register")
                 .set('Authorization', adminToken)
@@ -137,22 +137,20 @@ describe('Testing AuthController', function () {
                 })
         });
 
-        it('should return no content because the body is empty', function (done) {
+        it('should return BAD REQUEST because the body is empty', function (done) {
             data = {}
             chai.request(BASE_URL)
                 .post("/users/register")
                 .set('Authorization', adminToken)
                 .end(function (err, res) {
-                    expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                    expect(res).to.have.status(httpCode.codes.BADREQUEST);
                     done();
                 })
         });
     })
 
     after(function () {
-        // TEMPORAL. NEED TO IMPLEMENT DELETE USER
         const connection = require('../../app/database/database');
-        sql = 'DELETE FROM users WHERE dni = ?';
-        connection.query(sql, '12345678J');
+        connection.query('DELETE FROM users WHERE dni = ?', '12345678J');
     })
 });
