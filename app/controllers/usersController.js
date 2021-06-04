@@ -78,7 +78,7 @@ usersController.changePassword = (req, res) => {
     let email = req.body['userEmail']
     let passwords = req.body['passwords'];
     if (Object.keys(req.body).length === 0)
-        res.status(httpCode.codes.NOCONTENT).json('No passwords provided');
+        res.status(httpCode.codes.BADREQUEST).json('No passwords provided');
     else {
         sql = 'SELECT password FROM users WHERE email = ?';
         connection.query(sql, [email], function (err, password) {
@@ -91,7 +91,7 @@ usersController.changePassword = (req, res) => {
                             res.status(httpCode.codes.OK).json(['Password changed successfully']);
                     });
                 } else
-                    res.status(httpCode.codes.BADREQUEST).json('Wrong current password');
+                    res.status(httpCode.codes.CONFLICT).json('Wrong current password');
             } else
                 res.status(httpCode.codes.NOTFOUND).json('User not found');
         });

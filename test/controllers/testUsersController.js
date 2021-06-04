@@ -62,7 +62,7 @@ describe('Testing Users', function () {
                     penalties: 2
                 }
             });
-            it('should return an not found code because user not exists', function (done) {
+            it('should return NOT FOUND because user not exists', function (done) {
                 chai.request(BASE_URL)
                     .put("/users/userNotExist@email")
                     .set('Authorization', adminToken)
@@ -109,7 +109,7 @@ describe('Testing Users', function () {
 
         })
         describe('Add Phone Number', function () {
-            it('should return not found because the user does not exists', function (done) {
+            it('should return NOT FOUND because the user does not exists', function (done) {
                 chai.request(BASE_URL)
                     .post("/users/phone")
                     .set('Authorization', adminToken)
@@ -137,18 +137,18 @@ describe('Testing Users', function () {
                     passwords: {oldPassword: 'b', newPassword: 'b', confirmPassword: 'b'}
                 }
             })
-            it('should return no content because the body is empty', function (done) {
+            it('should return BAD REQUEST because the body is empty', function (done) {
                 passwordsInfo = {}
                 chai.request(BASE_URL)
                     .post("/users/password")
                     .set('Authorization', adminToken)
                     .send(passwordsInfo)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.NOCONTENT);
+                        expect(res).to.have.status(httpCode.codes.BADREQUEST);
                         done();
                     })
             });
-            it('should return not found because the user does not exists', function (done) {
+            it('should return NOT FOUND because the user does not exists', function (done) {
                 passwordsInfo = {
                     userEmail: 'noUserEmail@email',
                     passwords: {
@@ -166,7 +166,7 @@ describe('Testing Users', function () {
                         done();
                     })
             });
-            it('should return bad request because the original password is wrong', function (done) {
+            it('should return CONFLICT because the original password is wrong', function (done) {
                 passwordsInfo = {
                     userEmail: 'editedEmail@email',
                     passwords: {oldPassword: 'b', newPassword: 'b', confirmPassword: 'b'}
@@ -176,7 +176,7 @@ describe('Testing Users', function () {
                     .set('Authorization', adminToken)
                     .send(passwordsInfo)
                     .end(function (err, res) {
-                        expect(res).to.have.status(httpCode.codes.BADREQUEST);
+                        expect(res).to.have.status(httpCode.codes.CONFLICT);
                         done();
                     })
             });
