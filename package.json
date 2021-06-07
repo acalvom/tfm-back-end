@@ -4,6 +4,7 @@
   "description": "This project contains the code from the server side in NodeJS and Express",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "mocha test/**/*.js",
     "report": "mocha --recursive test --reporter mochawesome",
     "coverage": "nyc npm test"
