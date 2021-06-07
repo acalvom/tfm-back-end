@@ -9,7 +9,6 @@ newsController.createNews = (req, res) => {
     if (Object.keys(news).length === 0)
         res.status(httpCode.codes.BADREQUEST).json('No news sent');
     else {
-        // console.log(news)
         sql = 'INSERT INTO news SET ?';
         connection.query(sql, [news], function (err, resultDB) {
             if (!err) {
@@ -25,7 +24,6 @@ newsController.getLastNews = (req, res) => {
     sql = 'SELECT * FROM news ORDER BY id DESC LIMIT 3';
     connection.query(sql, function (err, lastNews) {
         if (!err && lastNews.length > 0) {
-            // console.log(lastNews)
             res.status(httpCode.codes.OK).json(lastNews);
         } else
             res.status(httpCode.codes.NOTFOUND).json('News not found');
@@ -36,7 +34,6 @@ newsController.deleteNews = (req, res) => {
     let code = req.params.code;
     sql = 'DELETE FROM news WHERE code = ?';
     connection.query(sql, [code], function (err, result) {
-        // console.log(code)
         if (!err && result.affectedRows > 0)
             res.status(httpCode.codes.NOCONTENT).json(['News ' + code + ' deleted successfully']);
         else
