@@ -4,6 +4,7 @@
   "description": "This project contains the code from the server side in NodeJS and Express",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "mocha test/**/*.js",
     "report": "mocha --recursive test --reporter mochawesome",
     "coverage": "nyc npm test"
@@ -17,6 +18,7 @@
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "helmet": "^4.5.0",
     "jsonwebtoken": "^8.5.1",
