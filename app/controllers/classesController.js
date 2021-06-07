@@ -10,7 +10,6 @@ classesController.createClass = (req, res) => {
         res.status(httpCode.codes.BADREQUEST).json('No class sent');
     else {
         sql = 'INSERT INTO classes SET ?';
-        //console.log(newClass)
         connection.query(sql, [newClass], function (err, resultDB) {
             if (!err) {
                 newClass.id = resultDB.insertId;
@@ -25,7 +24,6 @@ classesController.getAllClasses = (req, res) => {
     sql = 'SELECT * FROM classes';
     connection.query(sql, function (err, classes) {
         if (!err && classes.length > 0) {
-            // console.log(classes)
             res.status(httpCode.codes.OK).json(classes);
         } else
             res.status(httpCode.codes.NOTFOUND).json('Classes not found');
@@ -36,7 +34,6 @@ classesController.deleteClass = (req, res) => {
     let code = req.params.code;
     sql = 'DELETE FROM classes WHERE code = ?';
     connection.query(sql, [code], function (err, result) {
-        // console.log(code)
         if (!err && result.affectedRows > 0)
             res.status(httpCode.codes.NOCONTENT).json(['Class ' + code + ' deleted successfully']);
         else
@@ -48,7 +45,6 @@ classesController.editClass = (req, res) => {
     let code = req.params.code;
     let editedClass = req.body;
     sql = 'UPDATE classes SET ? WHERE code = ?';
-    // console.log(code, editedClass)
     connection.query(sql, [editedClass, code], function (err, result) {
         if (!err && result.affectedRows > 0)
             res.status(httpCode.codes.NOCONTENT).json(['Class updated successfully']);
@@ -64,11 +60,10 @@ classesController.updatePlaces = (req, res) => {
     connection.query(sql, [code], function (err, result) {
         let currentPlaces = result[0].current_places + value;
         let maxPlaces = result[0].max_places;
-        // console.log(currentPlaces, maxPlaces, currentPlaces <= maxPlaces)
         if (!err && currentPlaces <= maxPlaces) {
             sql = 'UPDATE classes SET current_places = ? WHERE code = ?';
-            connection.query(sql, [currentPlaces, code], function (err, result) {
-                if (!err && result.affectedRows > 0)
+            connection.query(sql, [currentPlaces, code], function (errUpd, resultUpd) {
+                if (!errUpd && resultUpd.affectedRows > 0)
                     res.status(httpCode.codes.NOCONTENT).json(['Places updated successfully']);
             });
         } else

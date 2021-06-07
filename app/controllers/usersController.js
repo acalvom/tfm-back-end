@@ -86,8 +86,8 @@ usersController.changePassword = (req, res) => {
                 if (bcrypt.compareSync(passwords['oldPassword'], password[0].password)) {
                     sql = 'UPDATE users SET password = ? WHERE email = ?';
                     let newPasswordEncrypted = bcrypt.hashSync(passwords['newPassword'], saltRounds);
-                    connection.query(sql, [newPasswordEncrypted, email], function (err, result) {
-                        if (!err && result.affectedRows > 0)
+                    connection.query(sql, [newPasswordEncrypted, email], function (errUpd, resultUpd) {
+                        if (!errUpd && resultUpd.affectedRows > 0)
                             res.status(httpCode.codes.OK).json(['Password changed successfully']);
                     });
                 } else

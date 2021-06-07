@@ -10,7 +10,6 @@ reservesController.createReserve = (req, res) => {
         res.status(httpCode.codes.BADREQUEST).json('No reserve sent');
     else {
         sql = 'INSERT INTO reserves SET ?';
-        // console.log(reserve)
         connection.query(sql, [reserve], function (err, resultDB) {
             if (!err) {
                 reserve.id = resultDB.insertId;
@@ -24,7 +23,6 @@ reservesController.createReserve = (req, res) => {
 reservesController.deleteReserve = (req, res) => {
     let id = req.params.id;
     sql = 'DELETE FROM reserves WHERE id = ?';
-    // console.log(id)
     connection.query(sql, [id], function (err, result) {
         if (!err && result.affectedRows > 0)
             res.status(httpCode.codes.NOCONTENT).json(['Reserve ' + id + ' deleted successfully']);
@@ -37,7 +35,6 @@ reservesController.getReservesByUserEmail = (req, res) => {
     let email = req.params.email;
     sql = 'SELECT * FROM reserves WHERE email_user = ?';
     connection.query(sql, [email], function (err, reserves) {
-        // console.log(reserves)
         if (!err && reserves.length > 0)
             res.status(httpCode.codes.OK).json(reserves);
         else
@@ -49,7 +46,6 @@ reservesController.getReservesByCodeClass = (req, res) => {
     let code = req.params.code;
     sql = 'SELECT * FROM reserves WHERE code_class = ?';
     connection.query(sql, [code], function (err, reserves) {
-        // console.log(reserves)
         if (!err && reserves.length > 0)
             res.status(httpCode.codes.OK).json(reserves);
         else
