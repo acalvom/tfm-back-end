@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "This project contains the code from the server side in NodeJS and Express",
   "main": "index.js",
+  "engines": {
+    "node": "~14.15.0",
+    "npm": "~6.14.8"
+  },
   "scripts": {
     "start": "node index.js",
-
     "test": "mocha test/**/*.js",
     "report": "mocha --recursive test --reporter mochawesome",
     "coverage": "nyc npm test"
