@@ -44,3 +44,4 @@ Thumbs.db
 /mochawesome-report/assets/
 /mochawesome-report/mochawesome.json
 /coverage/lcov-report
+/.env
