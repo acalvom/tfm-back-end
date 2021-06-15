@@ -1,12 +1,12 @@
 const mysql = require('mysql');
-const connectionData = require('./databaseManager');
+//const connectionData = require('./databaseManager');
 const DB_CODE = require('../resources/constants');
 
 const connection = mysql.createConnection({
-    host: process.env.DB_HOST || connectionData.connectionData.host,
-    user: process.env.DB_USER || connectionData.connectionData.user,
-    password: process.env.DB_PASSWORD || connectionData.connectionData.password,
-    database: process.env.DB_DATABASE || connectionData.connectionData.database
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 });
 
 connection.connect(function (err) {
