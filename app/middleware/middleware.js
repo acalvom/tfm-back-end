@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
-// const fs = require('fs');
+const fs = require('fs');
 
 const httpCode = require('../resources/httpCodes');
 const PARAMETERS = require('../resources/constants');
 const middleware = {}
 
 function readKey() {
-    return process.env.PRIVATE_KEY;
+    return fs.readFileSync('./app/middleware/private.key', "utf-8");
 }
 
 middleware.generateToken = (email, role) => {
